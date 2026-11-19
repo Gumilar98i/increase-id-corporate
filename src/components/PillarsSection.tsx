@@ -1,270 +1,104 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { usePreferences } from '@/context/PreferencesContext';
-import {
-  Lightbulb,
-  TrendingUp,
-  Briefcase,
-  CheckCircle2,
-  ArrowUpRight,
-} from 'lucide-react';
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
+import { usePreferences } from "@/context/PreferencesContext";
+import { siteContent } from "@/data/siteContent";
 
 export default function PillarsSection() {
-  const { content, highContrast, lang } = usePreferences();
-  const { pillarsSection } = content;
-
-  const [activePillarId, setActivePillarId] = useState<string>('all');
-
-  const getPillarIcon = (id: string) => {
-    switch (id) {
-      case 'incubator':
-        return Lightbulb;
-      case 'accelerator':
-        return TrendingUp;
-      case 'advisory':
-      default:
-        return Briefcase;
-    }
-  };
-
-  const getAccentClasses = (accent: 'blue' | 'teal' | 'amber') => {
-    if (highContrast) {
-      return {
-        badge: 'bg-yellow-400 text-black',
-        iconBox: 'bg-yellow-400 text-black',
-        border: 'border-2 border-yellow-400 bg-zinc-950',
-        check: 'text-yellow-400',
-        button:
-          'bg-yellow-400 text-black hover:bg-yellow-300 focus:ring-yellow-400',
-      };
-    }
-
-    switch (accent) {
-      case 'blue':
-        return {
-          badge: 'bg-blue-100 text-blue-800 border border-blue-200',
-          iconBox: 'bg-blue-700 text-white shadow-md shadow-blue-700/20',
-          border: 'border-slate-200 bg-white hover:border-blue-600/50',
-          check: 'text-blue-700',
-          button:
-            'bg-blue-700 text-white hover:bg-blue-800 focus:ring-blue-700',
-        };
-      case 'teal':
-        return {
-          badge: 'bg-teal-100 text-teal-900 border border-teal-200',
-          iconBox: 'bg-teal-600 text-white shadow-md shadow-teal-600/20',
-          border: 'border-slate-200 bg-white hover:border-teal-600/50',
-          check: 'text-teal-600',
-          button:
-            'bg-teal-700 text-white hover:bg-teal-800 focus:ring-teal-700',
-        };
-      case 'amber':
-      default:
-        return {
-          badge: 'bg-amber-100 text-amber-900 border border-amber-200',
-          iconBox: 'bg-slate-900 text-amber-400 shadow-md shadow-slate-900/20',
-          border: 'border-slate-200 bg-white hover:border-amber-500/60',
-          check: 'text-amber-600',
-          button:
-            'bg-slate-900 text-white hover:bg-slate-800 focus:ring-slate-900',
-        };
-    }
-  };
-
-  const filteredPillars =
-    activePillarId === 'all'
-      ? pillarsSection.pillars
-      : pillarsSection.pillars.filter((p) => p.id === activePillarId);
+  const { language, highContrast } = usePreferences();
+  const content = siteContent[language].pillars;
 
   return (
     <section
-      id="pilar"
-      aria-labelledby="pillars-heading"
-      className={`border-b py-16 sm:py-24 transition-colors ${
+      className={`py-16 lg:py-24 transition-colors duration-200 ${
         highContrast
-          ? 'border-yellow-400 bg-black text-white'
-          : 'border-slate-200 bg-slate-50 text-slate-900'
+          ? "bg-black text-yellow-300 border-b border-yellow-400"
+          : "bg-slate-50 text-slate-900 border-y border-slate-200/70"
       }`}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header Bagian Pilar Program */}
-        <div className="mx-auto max-w-3xl text-center">
-          <p
-            className={`text-xs font-extrabold uppercase tracking-widest ${
-              highContrast ? 'text-yellow-400' : 'text-blue-700'
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mb-12">
+          <span
+            className={`text-xs font-bold uppercase tracking-widest ${
+              highContrast ? "text-yellow-400" : "text-teal-700"
             }`}
           >
-            {pillarsSection.eyebrow}
-          </p>
-          <h2
-            id="pillars-heading"
-            className="mt-2 text-2xl font-extrabold tracking-tight sm:text-4xl"
-          >
-            {pillarsSection.title}
+            {content.badge}
+          </span>
+          <h2 className="mt-2 text-2xl sm:text-4xl font-extrabold tracking-tight">
+            {content.title}
           </h2>
           <p
-            className={`mt-4 text-base leading-relaxed ${
-              highContrast ? 'text-zinc-300' : 'text-slate-600'
+            className={`mt-3 text-base leading-relaxed ${
+              highContrast ? "text-yellow-100" : "text-slate-600"
             }`}
           >
-            {pillarsSection.description}
+            {content.subtitle}
           </p>
         </div>
 
-        {/* Filter Tab Interaktif (Memudahkan eksplorasi fokus program) */}
-        <div
-          className="mt-8 flex flex-wrap items-center justify-center gap-2"
-          role="tablist"
-          aria-label={
-            lang === 'id' ? 'Filter Pilar Program' : 'Filter Program Pillars'
-          }
-        >
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activePillarId === 'all'}
-            onClick={() => setActivePillarId('all')}
-            className={`rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider transition focus:outline-none focus:ring-2 ${
-              activePillarId === 'all'
-                ? highContrast
-                  ? 'bg-yellow-400 text-black focus:ring-yellow-400'
-                  : 'bg-blue-700 text-white shadow-sm focus:ring-blue-700'
-                : highContrast
-                ? 'border border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white'
-                : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-100'
-            }`}
-          >
-            {lang === 'id' ? 'Semua Pilar (3)' : 'All Pillars (3)'}
-          </button>
-
-          {pillarsSection.pillars.map((pillar) => (
-            <button
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {content.items.map((pillar) => (
+            <article
               key={pillar.id}
-              type="button"
-              role="tab"
-              aria-selected={activePillarId === pillar.id}
-              onClick={() => setActivePillarId(pillar.id)}
-              className={`rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider transition focus:outline-none focus:ring-2 ${
-                activePillarId === pillar.id
-                  ? highContrast
-                    ? 'bg-yellow-400 text-black focus:ring-yellow-400'
-                    : 'bg-blue-700 text-white shadow-sm focus:ring-blue-700'
-                  : highContrast
-                  ? 'border border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white'
-                  : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-100'
+              className={`group rounded-3xl overflow-hidden border flex flex-col transition-all duration-300 ${
+                highContrast
+                  ? "bg-zinc-950 border-yellow-400"
+                  : "bg-white border-slate-200/80 shadow-xs hover:shadow-xl hover:-translate-y-1"
               }`}
             >
-              {pillar.title}
-            </button>
-          ))}
-        </div>
+              {/* Card Image */}
+              <div className="relative h-52 w-full overflow-hidden bg-slate-200">
+                <Image
+                  src={pillar.image}
+                  alt={pillar.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
 
-        {/* Grid Kartu Pilar Program */}
-        <div
-          className={`mt-12 grid grid-cols-1 gap-8 ${
-            filteredPillars.length === 1
-              ? 'mx-auto max-w-3xl'
-              : 'lg:grid-cols-3'
-          }`}
-        >
-          {filteredPillars.map((pillar) => {
-            const IconComponent = getPillarIcon(pillar.id);
-            const styles = getAccentClasses(pillar.accentColor);
-
-            return (
-              <article
-                key={pillar.id}
-                id={`pilar-${pillar.id}`}
-                className={`flex flex-col justify-between rounded-3xl border p-7 sm:p-8 shadow-sm transition-all ${styles.border}`}
-              >
-                <div>
-                  {/* Baris Atas: Badge & Ikon */}
-                  <div className="flex items-center justify-between gap-4">
-                    <span
-                      className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-extrabold uppercase tracking-wider ${styles.badge}`}
-                    >
-                      {pillar.badge}
-                    </span>
-                    <div
-                      className={`flex h-12 w-12 items-center justify-center rounded-2xl ${styles.iconBox}`}
-                    >
-                      <IconComponent className="h-6 w-6" aria-hidden="true" />
-                    </div>
-                  </div>
-
-                  {/* Judul & Subjudul Pilar */}
-                  <h3 className="mt-6 text-2xl font-extrabold tracking-tight">
+              {/* Card Body */}
+              <div className="p-7 flex-1 flex flex-col justify-between space-y-6">
+                <div className="space-y-2.5">
+                  <p
+                    className={`text-xs font-bold uppercase tracking-wider ${
+                      highContrast ? "text-yellow-400" : "text-teal-600"
+                    }`}
+                  >
+                    {pillar.tagline}
+                  </p>
+                  <h3 className="text-xl font-extrabold tracking-tight">
                     {pillar.title}
                   </h3>
                   <p
-                    className={`mt-2 text-sm font-semibold ${
-                      highContrast ? 'text-yellow-300' : 'text-blue-700'
-                    }`}
-                  >
-                    {pillar.subtitle}
-                  </p>
-
-                  {/* Deskripsi Pilar */}
-                  <p
-                    className={`mt-4 text-sm leading-relaxed ${
-                      highContrast ? 'text-zinc-300' : 'text-slate-600'
+                    className={`text-sm leading-relaxed ${
+                      highContrast ? "text-yellow-100" : "text-slate-600"
                     }`}
                   >
                     {pillar.description}
                   </p>
+                </div>
 
-                  {/* Daftar Cakupan Program (Highlights) */}
-                  <div
-                    className={`mt-6 border-t pt-6 ${
-                      highContrast ? 'border-zinc-800' : 'border-slate-100'
+                <div>
+                  <Link
+                    href={`/program#${pillar.id}`}
+                    className={`inline-flex items-center gap-1.5 text-sm font-bold transition-colors ${
+                      highContrast
+                        ? "text-yellow-400 underline"
+                        : "text-teal-700 hover:text-teal-900"
                     }`}
                   >
-                    <p
-                      className={`text-xs font-bold uppercase tracking-wider ${
-                        highContrast ? 'text-zinc-400' : 'text-slate-400'
-                      }`}
-                    >
-                      {lang === 'id'
-                        ? 'Fokus & Cakupan Utama:'
-                        : 'Core Focus & Deliverables:'}
-                    </p>
-                    <ul className="mt-3 space-y-3">
-                      {pillar.highlights.map((point, index) => (
-                        <li
-                          key={index}
-                          className="flex items-start gap-2.5 text-sm leading-snug"
-                        >
-                          <CheckCircle2
-                            className={`mt-0.5 h-4 w-4 shrink-0 ${styles.check}`}
-                            aria-hidden="true"
-                          />
-                          <span
-                            className={
-                              highContrast ? 'text-zinc-100' : 'text-slate-700'
-                            }
-                          >
-                            {point}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                    <span>{content.ctaText}</span>
+                    <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </Link>
                 </div>
-
-                {/* Tombol Aksi Pilar */}
-                <div className="mt-8 pt-2">
-                  <a
-                    href="#kontak"
-                    className={`inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-bold transition focus:outline-none focus:ring-2 focus:ring-offset-2 ${styles.button}`}
-                  >
-                    <span>{pillar.ctaText}</span>
-                    <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                  </a>
-                </div>
-              </article>
-            );
-          })}
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>

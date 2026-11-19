@@ -1,233 +1,170 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { usePreferences } from '@/context/PreferencesContext';
-import {
-  Mail,
-  Phone,
-  MapPin,
-  ShieldCheck,
-  ArrowUpRight,
-} from 'lucide-react';
+import React from "react";
+import Link from "next/link";
+import { MapPin, Mail, ArrowUpRight, Accessibility } from "lucide-react";
+import { usePreferences } from "@/context/PreferencesContext";
 
 export default function Footer() {
-  const { content, highContrast, lang } = usePreferences();
-  const { footer, nav, pillarsSection } = content;
+  const { language, highContrast } = usePreferences();
+
+  const navLinks = [
+    {
+      href: "/tentang-kami",
+      label: language === "id" ? "Tentang Kami" : "About Us",
+    },
+    {
+      href: "/program",
+      label: language === "id" ? "Pilar Program" : "Program Pillars",
+    },
+    {
+      href: "/berita",
+      label: language === "id" ? "Berita & Riset" : "News & Insights",
+    },
+    {
+      href: "/kontak",
+      label: language === "id" ? "Kontak & Kemitraan" : "Contact & Partnership",
+    },
+  ];
 
   return (
     <footer
-      id="kontak"
-      aria-labelledby="footer-heading"
-      className={`transition-colors ${
+      className={`transition-colors duration-200 ${
         highContrast
-          ? 'bg-black text-white'
-          : 'bg-slate-950 text-slate-200'
+          ? "bg-black text-yellow-300 border-t-2 border-yellow-400"
+          : "bg-slate-950 text-slate-300"
       }`}
     >
-      <h2 id="footer-heading" className="sr-only">
-        Footer
-      </h2>
-
-      {/* Banner Ajakan Kemitraan (Call to Partnership) */}
-      <div
-        className={`border-b ${
-          highContrast ? 'border-yellow-400' : 'border-slate-800'
-        }`}
-      >
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 py-12 sm:px-6 lg:flex-row lg:items-center lg:px-8">
-          <div className="max-w-2xl">
-            <p
-              className={`text-xs font-extrabold uppercase tracking-widest ${
-                highContrast ? 'text-yellow-400' : 'text-teal-400'
-              }`}
-            >
-              {lang === 'id'
-                ? 'KOLABORASI & KEMITRAAN STRATEGIS'
-                : 'STRATEGIC COLLABORATION & PARTNERSHIP'}
-            </p>
-            <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
-              {lang === 'id'
-                ? 'Siap Membangun Ekosistem Bisnis yang Lebih Inklusif Bersama Increase.id?'
-                : 'Ready to Build a More Inclusive Business Ecosystem with Increase.id?'}
-            </h3>
-          </div>
-
-          <div className="flex flex-wrap gap-4">
-            <a
-              href={`mailto:${footer.email}`}
-              className={`inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold transition focus:outline-none focus:ring-2 ${
-                highContrast
-                  ? 'bg-yellow-400 text-black hover:bg-yellow-300 focus:ring-yellow-400'
-                  : 'bg-blue-600 text-white hover:bg-blue-500 focus:ring-blue-400'
-              }`}
-            >
-              <Mail className="h-4 w-4" aria-hidden="true" />
-              <span>{footer.email}</span>
-              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Isi Utama Footer */}
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-12">
-          {/* Kolom 1: Profil Singkat & Alamat */}
-          <div className="lg:col-span-5">
-            <div className="flex items-center gap-3">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-10 border-b border-slate-800/80">
+          {/* Brand & Tagline */}
+          <div className="md:col-span-5 space-y-4">
+            <Link href="/" className="inline-flex items-center gap-2.5 group">
               <div
-                className={`flex h-10 w-10 items-center justify-center rounded-xl font-black text-lg ${
+                className={`w-9 h-9 rounded-xl flex items-center justify-center font-extrabold text-lg transition-transform group-hover:scale-105 ${
                   highContrast
-                    ? 'bg-yellow-400 text-black'
-                    : 'bg-gradient-to-br from-blue-600 to-teal-500 text-white'
+                    ? "bg-yellow-400 text-black"
+                    : "bg-teal-600 text-white"
                 }`}
               >
-                IN
+                in
               </div>
-              <div>
-                <span className="block text-xl font-extrabold tracking-tight text-white">
-                  Increase
-                  <span
-                    className={
-                      highContrast ? 'text-yellow-400' : 'text-teal-400'
-                    }
-                  >
-                    .id
-                  </span>
+              <span className="font-extrabold text-xl tracking-tight text-white">
+                increase
+                <span
+                  className={highContrast ? "text-yellow-400" : "text-teal-400"}
+                >
+                  .id
                 </span>
-                <span className="block text-[11px] font-medium uppercase tracking-widest text-slate-400">
-                  Inclusive Creative Social Enterprise
-                </span>
-              </div>
-            </div>
+              </span>
+            </Link>
 
             <p
-              className={`mt-4 max-w-md text-sm leading-relaxed ${
-                highContrast ? 'text-zinc-300' : 'text-slate-400'
+              className={`text-sm leading-relaxed max-w-sm ${
+                highContrast ? "text-yellow-100" : "text-slate-400"
               }`}
             >
-              {footer.aboutText}
+              {language === "id"
+                ? "Inclusive Creative Social Enterprise yang menghubungkan talenta disabilitas dengan ekosistem industri modern."
+                : "An Inclusive Creative Social Enterprise connecting talents with disabilities to modern industry ecosystems."}
             </p>
+          </div>
 
-            <div className="mt-6 flex items-start gap-2.5 text-sm">
-              <MapPin
-                className={`mt-0.5 h-4 w-4 shrink-0 ${
-                  highContrast ? 'text-yellow-400' : 'text-teal-400'
+          {/* Navigation Links */}
+          <div className="md:col-span-3 space-y-3.5">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-white">
+              {language === "id" ? "Navigasi" : "Navigation"}
+            </h3>
+            <ul className="space-y-2.5 text-sm">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={`transition-colors ${
+                      highContrast
+                        ? "text-yellow-200 hover:text-yellow-400 hover:underline"
+                        : "text-slate-400 hover:text-teal-400"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Official Hub & Partnership Contact */}
+          <div className="md:col-span-4 space-y-3.5">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-white">
+              {language === "id" ? "Increase Inclusive Hub" : "Increase Inclusive Hub"}
+            </h3>
+            <ul
+              className={`space-y-3 text-sm ${
+                highContrast ? "text-yellow-100" : "text-slate-400"
+              }`}
+            >
+              <li className="flex items-start gap-2.5">
+                <MapPin
+                  className={`w-4 h-4 mt-0.5 shrink-0 ${
+                    highContrast ? "text-yellow-400" : "text-teal-400"
+                  }`}
+                />
+                <span>Jl. Kemang Raya No. 88, Jakarta Selatan</span>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <Mail
+                  className={`w-4 h-4 shrink-0 ${
+                    highContrast ? "text-yellow-400" : "text-teal-400"
+                  }`}
+                />
+                <a
+                  href="mailto:partnership@increase.id"
+                  className="hover:text-white transition-colors"
+                >
+                  partnership@increase.id
+                </a>
+              </li>
+            </ul>
+
+            <div className="pt-1">
+              <Link
+                href="/kontak"
+                className={`inline-flex items-center gap-1.5 text-sm font-semibold transition-colors ${
+                  highContrast
+                    ? "text-yellow-400 underline"
+                    : "text-teal-400 hover:text-teal-300"
                 }`}
-                aria-hidden="true"
-              />
-              <div>
-                <p className="font-bold text-white">{footer.addressTitle}</p>
-                {footer.addressLines.map((line) => (
-                  <p
-                    key={line}
-                    className={
-                      highContrast ? 'text-zinc-300' : 'text-slate-400'
-                    }
-                  >
-                    {line}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Kolom 2: Navigasi Cepat */}
-          <div className="lg:col-span-3">
-            <h4 className="text-xs font-extrabold uppercase tracking-wider text-white">
-              {footer.quickLinksTitle}
-            </h4>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              {nav.items.map((item) => (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
-                    className={`transition hover:underline ${
-                      highContrast
-                        ? 'text-zinc-300 hover:text-yellow-400'
-                        : 'text-slate-400 hover:text-white'
-                    }`}
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Kolom 3: Pilar Program & Kontak */}
-          <div className="lg:col-span-4">
-            <h4 className="text-xs font-extrabold uppercase tracking-wider text-white">
-              {footer.pillarsTitle}
-            </h4>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              {pillarsSection.pillars.map((pillar) => (
-                <li key={pillar.id}>
-                  <a
-                    href={pillar.href}
-                    className={`transition hover:underline ${
-                      highContrast
-                        ? 'text-zinc-300 hover:text-yellow-400'
-                        : 'text-slate-400 hover:text-white'
-                    }`}
-                  >
-                    {pillar.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-6 border-t border-slate-800 pt-5">
-              <h4 className="text-xs font-extrabold uppercase tracking-wider text-white">
-                {footer.contactTitle}
-              </h4>
-              <div className="mt-3 space-y-2 text-sm">
-                <p className="flex items-center gap-2">
-                  <Mail
-                    className={`h-4 w-4 ${
-                      highContrast ? 'text-yellow-400' : 'text-teal-400'
-                    }`}
-                    aria-hidden="true"
-                  />
-                  <a
-                    href={`mailto:${footer.email}`}
-                    className="hover:underline"
-                  >
-                    {footer.email}
-                  </a>
-                </p>
-                <p className="flex items-center gap-2">
-                  <Phone
-                    className={`h-4 w-4 ${
-                      highContrast ? 'text-yellow-400' : 'text-teal-400'
-                    }`}
-                    aria-hidden="true"
-                  />
-                  <span>{footer.phone}</span>
-                </p>
-              </div>
+              >
+                <span>
+                  {language === "id"
+                    ? "Mulai Kemitraan"
+                    : "Start a Partnership"}
+                </span>
+                <ArrowUpRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </div>
 
-        {/* Baris Hak Cipta & Pernyataan Standar WCAG */}
+        {/* Bottom Copyright & WCAG 2.1 Level AA Note */}
         <div
-          className={`mt-12 flex flex-col items-start justify-between gap-4 border-t pt-8 text-xs sm:flex-row sm:items-center ${
-            highContrast
-              ? 'border-yellow-400/50 text-zinc-300'
-              : 'border-slate-800 text-slate-400'
+          className={`pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs ${
+            highContrast ? "text-yellow-200" : "text-slate-500"
           }`}
         >
-          <p>{footer.copyright}</p>
-          <p className="inline-flex items-center gap-2 font-medium">
-            <ShieldCheck
-              className={`h-4 w-4 ${
-                highContrast ? 'text-yellow-400' : 'text-teal-400'
+          <p>© 2026 Increase.id — Inclusive Creative Social Enterprise.</p>
+          <div className="inline-flex items-center gap-1.5 font-medium">
+            <Accessibility
+              className={`w-3.5 h-3.5 ${
+                highContrast ? "text-yellow-400" : "text-teal-500"
               }`}
-              aria-hidden="true"
             />
-            <span>{footer.accessibilityStatement}</span>
-          </p>
+            <span>
+              {language === "id"
+                ? "Memenuhi standar aksesibilitas WCAG 2.1 Level AA"
+                : "Compliant with WCAG 2.1 Level AA accessibility standards"}
+            </span>
+          </div>
         </div>
       </div>
     </footer>

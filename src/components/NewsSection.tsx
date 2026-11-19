@@ -1,255 +1,226 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { usePreferences } from '@/context/PreferencesContext';
-import { ArticleItem } from '@/data/siteContent';
-import {
-  Calendar,
-  Clock,
-  ArrowRight,
-  BookOpen,
-  UserCheck,
-  X,
-} from 'lucide-react';
+import React, { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Calendar, Clock, ArrowRight, X } from "lucide-react";
+import { usePreferences } from "@/context/PreferencesContext";
+import { siteContent, NewsItem } from "@/data/siteContent";
 
-export default function NewsSection() {
-  const { content, highContrast, lang } = usePreferences();
-  const { newsSection } = content;
+interface NewsSectionProps {
+  showViewAllButton?: boolean;
+}
 
-  const [selectedArticle, setSelectedArticle] = useState<ArticleItem | null>(
-    null
-  );
+export default function NewsSection({ showViewAllButton = true }: NewsSectionProps) {
+  const { language, highContrast } = usePreferences();
+  const content = siteContent[language].news;
+  const [selectedArticle, setSelectedArticle] = useState<NewsItem | null>(null);
 
   return (
     <section
-      id="berita"
-      aria-labelledby="news-heading"
-      className={`border-b py-16 sm:py-24 transition-colors ${
+      className={`py-16 lg:py-24 transition-colors duration-200 ${
         highContrast
-          ? 'border-yellow-400 bg-black text-white'
-          : 'border-slate-200 bg-white text-slate-900'
+          ? "bg-black text-yellow-300 border-b border-yellow-400"
+          : "bg-white text-slate-900"
       }`}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header Bagian Berita & Publikasi */}
-        <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-          <div className="max-w-3xl">
-            <p
-              className={`text-xs font-extrabold uppercase tracking-widest ${
-                highContrast ? 'text-yellow-400' : 'text-blue-700'
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+          <div>
+            <span
+              className={`text-xs font-bold uppercase tracking-widest ${
+                highContrast ? "text-yellow-400" : "text-teal-700"
               }`}
             >
-              {newsSection.eyebrow}
-            </p>
-            <h2
-              id="news-heading"
-              className="mt-2 text-2xl font-extrabold tracking-tight sm:text-4xl"
-            >
-              {newsSection.title}
+              {content.badge}
+            </span>
+            <h2 className="mt-2 text-2xl sm:text-4xl font-extrabold tracking-tight">
+              {content.title}
             </h2>
             <p
-              className={`mt-4 text-base leading-relaxed ${
-                highContrast ? 'text-zinc-300' : 'text-slate-600'
+              className={`mt-2 text-base max-w-2xl ${
+                highContrast ? "text-yellow-100" : "text-slate-600"
               }`}
             >
-              {newsSection.description}
+              {content.subtitle}
             </p>
           </div>
 
-          <a
-            href="#kontak"
-            className={`inline-flex items-center gap-2 self-start rounded-full border px-5 py-2.5 text-sm font-bold transition lg:self-auto ${
-              highContrast
-                ? 'border-yellow-400 bg-zinc-900 text-yellow-400 hover:bg-zinc-800'
-                : 'border-slate-300 bg-slate-50 text-slate-800 hover:border-blue-600 hover:text-blue-700'
-            }`}
-          >
-            <BookOpen className="h-4 w-4" aria-hidden="true" />
-            <span>{newsSection.viewAllText}</span>
-          </a>
-        </div>
-
-        {/* Grid 3 Artikel Korporat */}
-        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-          {newsSection.articles.map((article, idx) => (
-            <article
-              key={article.id}
-              className={`group flex flex-col justify-between rounded-3xl border overflow-hidden transition-all ${
+          {showViewAllButton && (
+            <Link
+              href="/berita"
+              className={`inline-flex items-center gap-1.5 text-sm font-bold shrink-0 ${
                 highContrast
-                  ? 'border-2 border-yellow-400 bg-zinc-950'
-                  : 'border-slate-200 bg-slate-50/60 hover:-translate-y-1 hover:border-blue-600/40 hover:bg-white hover:shadow-xl hover:shadow-slate-900/5'
+                  ? "text-yellow-400 underline"
+                  : "text-teal-700 hover:text-teal-900"
               }`}
             >
-              <div>
-                {/* Ilustrasi Banner Visual Korporat */}
-                <div
-                  className={`relative flex h-44 flex-col justify-between p-6 ${
+              <span>{language === "id" ? "Semua Berita" : "All Articles"}</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {content.items.map((item) => (
+            <article
+              key={item.id}
+              className={`group rounded-3xl overflow-hidden border flex flex-col transition-all duration-300 ${
+                highContrast
+                  ? "bg-zinc-950 border-yellow-400"
+                  : "bg-white border-slate-200/80 shadow-xs hover:shadow-lg"
+              }`}
+            >
+              <div className="relative h-48 w-full overflow-hidden bg-slate-100">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span
+                  className={`absolute top-3.5 left-3.5 px-3 py-1 rounded-full text-xs font-bold ${
                     highContrast
-                      ? 'border-b border-yellow-400 bg-zinc-900'
-                      : idx === 0
-                      ? 'bg-gradient-to-br from-blue-800 via-blue-700 to-teal-600 text-white'
-                      : idx === 1
-                      ? 'bg-gradient-to-br from-teal-700 via-teal-600 to-emerald-600 text-white'
-                      : 'bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white'
+                      ? "bg-yellow-400 text-black"
+                      : "bg-white/95 text-teal-800 shadow-xs"
                   }`}
                 >
-                  <div className="flex items-center justify-between gap-2">
-                    <span
-                      className={`inline-block rounded-full px-3 py-1 text-xs font-extrabold uppercase tracking-wider ${
-                        highContrast
-                          ? 'bg-yellow-400 text-black'
-                          : 'bg-white/20 text-white backdrop-blur-sm'
-                      }`}
-                    >
-                      {article.category}
-                    </span>
-                    <span className="text-xs font-semibold opacity-90">
-                      0{idx + 1}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-4 text-xs font-medium opacity-95">
-                    <span className="inline-flex items-center gap-1.5">
-                      <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
-                      {article.date}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <Clock className="h-3.5 w-3.5" aria-hidden="true" />
-                      {article.readTime}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Konten Artikel */}
-                <div className="p-6 sm:p-7">
-                  <h3 className="text-lg font-extrabold leading-snug tracking-tight">
-                    {article.title}
-                  </h3>
-                  <p
-                    className={`mt-3 text-sm leading-relaxed ${
-                      highContrast ? 'text-zinc-300' : 'text-slate-600'
-                    }`}
-                  >
-                    {article.excerpt}
-                  </p>
-                </div>
+                  {item.category}
+                </span>
               </div>
 
-              {/* Footer Kartu Artikel */}
-              <div
-                className={`flex items-center justify-between border-t px-6 py-4 sm:px-7 ${
-                  highContrast ? 'border-zinc-800' : 'border-slate-200/80'
-                }`}
-              >
-                <span
-                  className={`inline-flex items-center gap-1.5 text-xs font-medium ${
-                    highContrast ? 'text-zinc-300' : 'text-slate-500'
-                  }`}
-                >
-                  <UserCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                  {article.author}
-                </span>
+              <div className="p-6 flex-1 flex flex-col justify-between space-y-5">
+                <div className="space-y-2.5">
+                  <div
+                    className={`flex items-center gap-3 text-xs ${
+                      highContrast ? "text-yellow-200" : "text-slate-500"
+                    }`}
+                  >
+                    <span className="inline-flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5" />
+                      {item.date}
+                    </span>
+                    <span>•</span>
+                    <span className="inline-flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5" />
+                      {item.readTime}
+                    </span>
+                  </div>
 
-                <button
-                  type="button"
-                  onClick={() => setSelectedArticle(article)}
-                  className={`inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider transition focus:outline-none focus:underline ${
-                    highContrast
-                      ? 'text-yellow-400 hover:text-yellow-300'
-                      : 'text-blue-700 hover:text-blue-900'
-                  }`}
-                >
-                  <span>{newsSection.readMoreText}</span>
-                  <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-                </button>
+                  <h3 className="text-lg font-extrabold leading-snug line-clamp-2">
+                    {item.title}
+                  </h3>
+
+                  <p
+                    className={`text-sm leading-relaxed line-clamp-3 ${
+                      highContrast ? "text-yellow-100" : "text-slate-600"
+                    }`}
+                  >
+                    {item.excerpt}
+                  </p>
+                </div>
+
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedArticle(item)}
+                    className={`inline-flex items-center gap-1.5 text-sm font-bold cursor-pointer ${
+                      highContrast
+                        ? "text-yellow-400 underline"
+                        : "text-teal-700 hover:text-teal-900"
+                    }`}
+                  >
+                    <span>{content.readMore}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </article>
           ))}
         </div>
       </div>
 
-      {/* Modal Pratinjau Artikel Aksesibel */}
+      {/* Article Reader Modal */}
       {selectedArticle && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs"
           role="dialog"
           aria-modal="true"
-          aria-labelledby="modal-article-title"
+          aria-labelledby="article-modal-title"
         >
           <div
-            className={`relative max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-3xl border p-6 sm:p-8 shadow-2xl ${
+            className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl border ${
               highContrast
-                ? 'border-2 border-yellow-400 bg-black text-white'
-                : 'border-slate-200 bg-white text-slate-900'
+                ? "bg-black text-yellow-300 border-2 border-yellow-400"
+                : "bg-white text-slate-900 border-slate-200"
             }`}
           >
-            <div className="flex items-start justify-between gap-4 border-b pb-4 border-slate-200 dark:border-zinc-800">
-              <div>
+            <div className="relative h-56 sm:h-64 w-full bg-slate-200">
+              <Image
+                src={selectedArticle.image}
+                alt={selectedArticle.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 672px"
+                className="object-cover"
+              />
+              <button
+                type="button"
+                onClick={() => setSelectedArticle(null)}
+                className={`absolute top-4 right-4 p-2 rounded-full shadow-md transition cursor-pointer ${
+                  highContrast
+                    ? "bg-yellow-400 text-black"
+                    : "bg-white/95 text-slate-800 hover:bg-white"
+                }`}
+                aria-label={content.closeModal}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 sm:p-8 space-y-5">
+              <div className="flex flex-wrap items-center gap-3 text-xs font-semibold">
                 <span
-                  className={`inline-block rounded-full px-3 py-1 text-xs font-bold uppercase ${
+                  className={`px-3 py-1 rounded-full ${
                     highContrast
-                      ? 'bg-yellow-400 text-black'
-                      : 'bg-blue-100 text-blue-800'
+                      ? "bg-yellow-400 text-black"
+                      : "bg-teal-50 text-teal-800"
                   }`}
                 >
                   {selectedArticle.category}
                 </span>
-                <p
-                  className={`mt-2 text-xs ${
-                    highContrast ? 'text-zinc-300' : 'text-slate-500'
-                  }`}
-                >
-                  {selectedArticle.date} • {selectedArticle.readTime} •{' '}
-                  {selectedArticle.author}
-                </p>
+                <span className="opacity-75">{selectedArticle.date}</span>
+                <span>•</span>
+                <span className="opacity-75">{selectedArticle.readTime}</span>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setSelectedArticle(null)}
-                aria-label={lang === 'id' ? 'Tutup artikel' : 'Close article'}
-                className={`rounded-full p-2 transition ${
-                  highContrast
-                    ? 'bg-yellow-400 text-black hover:bg-yellow-300'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+              <h3 id="article-modal-title" className="text-2xl font-extrabold leading-tight">
+                {selectedArticle.title}
+              </h3>
+
+              <div
+                className={`space-y-4 text-base leading-relaxed ${
+                  highContrast ? "text-yellow-100" : "text-slate-700"
                 }`}
               >
-                <X className="h-5 w-5" aria-hidden="true" />
-              </button>
-            </div>
+                {selectedArticle.content.map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
 
-            <h3
-              id="modal-article-title"
-              className="mt-5 text-xl font-extrabold leading-snug sm:text-2xl"
-            >
-              {selectedArticle.title}
-            </h3>
-
-            <div
-              className={`mt-4 space-y-4 text-sm leading-relaxed sm:text-base ${
-                highContrast ? 'text-zinc-200' : 'text-slate-700'
-              }`}
-            >
-              <p>{selectedArticle.excerpt}</p>
-              <p>
-                {lang === 'id'
-                  ? 'Melalui pendekatan kolaboratif antara wirausaha kreatif penyandang disabilitas, mentor industri, serta mitra pengadaan korporasi, Increase.id terus membuktikan bahwa inklusivitas bukan sekadar kepatuhan sosial, melainkan penggerak inovasi dan daya saing bisnis jangka panjang.'
-                  : 'Through a collaborative approach uniting creative entrepreneurs with disabilities, industry mentors, and corporate procurement partners, Increase.id continues to demonstrate that inclusion is not merely social compliance, but a catalyst for long-term business innovation and competitiveness.'}
-              </p>
-            </div>
-
-            <div className="mt-8 flex justify-end">
-              <button
-                type="button"
-                onClick={() => setSelectedArticle(null)}
-                className={`rounded-full px-6 py-2.5 text-sm font-bold transition ${
-                  highContrast
-                    ? 'bg-yellow-400 text-black hover:bg-yellow-300'
-                    : 'bg-blue-700 text-white hover:bg-blue-800'
-                }`}
-              >
-                {lang === 'id' ? 'Tutup Pratinjau' : 'Close Preview'}
-              </button>
+              <div className="pt-4 border-t border-slate-200/60 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setSelectedArticle(null)}
+                  className={`px-6 py-2.5 rounded-full text-sm font-bold cursor-pointer ${
+                    highContrast
+                      ? "bg-yellow-400 text-black"
+                      : "bg-slate-900 text-white hover:bg-slate-800"
+                  }`}
+                >
+                  {content.closeModal}
+                </button>
+              </div>
             </div>
           </div>
         </div>

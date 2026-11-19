@@ -1,545 +1,842 @@
-export type Language = 'id' | 'en';
-
-export interface NavItem {
-  label: string;
-  href: string;
-}
-
 export interface MetricItem {
-  id: string;
   value: string;
-  suffix: string;
   label: string;
-  description: string;
-  category: string;
+  sublabel: string;
 }
 
-export interface PillarItem {
+export interface PillarHomeItem {
   id: string;
-  badge: string;
   title: string;
-  subtitle: string;
-  description: string;
-  highlights: string[];
-  ctaText: string;
-  href: string;
-  accentColor: 'blue' | 'teal' | 'amber';
+  tagline: string;
+  shortDesc: string;
+  image: string;
 }
 
-export interface ArticleItem {
+export interface PillarDetailItem {
+  id: string;
+  title: string;
+  tagline: string;
+  image: string;
+  overview: string;
+  targetAudience: string;
+  duration: string;
+  curriculum: {
+    moduleTitle: string;
+    topics: string[];
+  }[];
+  outcomes: string[];
+}
+
+export interface NewsItem {
   id: string;
   category: string;
   date: string;
   readTime: string;
   title: string;
   excerpt: string;
-  author: string;
-  slug: string;
+  content: string[];
+  image: string;
 }
 
-export interface SiteData {
-  meta: {
-    siteName: string;
-    tagline: string;
-    skipToContent: string;
-  };
-  accessibilityBar: {
-    label: string;
-    contrastToggle: string;
-    contrastActive: string;
-    fontSizeLabel: string;
-    languageLabel: string;
-  };
-  nav: {
-    items: NavItem[];
-    ctaButton: string;
-  };
+export interface SiteLanguageContent {
   hero: {
-    eyebrow: string;
+    badge: string;
     title: string;
-    highlightTitle: string;
-    description: string;
+    subtitle: string;
     primaryCta: string;
     secondaryCta: string;
-    featuredStatLabel: string;
-    featuredStatValue: string;
+    image: string;
+    imageCaption: string;
   };
-  impactSection: {
-    eyebrow: string;
+  metrics: {
     title: string;
-    description: string;
-    lastUpdated: string;
-    metrics: MetricItem[];
+    subtitle: string;
+    items: MetricItem[];
   };
-  pillarsSection: {
-    eyebrow: string;
+  pillars: {
+    badge: string;
     title: string;
-    description: string;
-    pillars: PillarItem[];
-  };
-  inclusionCommitment: {
-    eyebrow: string;
-    title: string;
-    description: string;
-    points: {
-      title: string;
-      description: string;
-    }[];
+    subtitle: string;
     ctaText: string;
+    items: PillarHomeItem[];
   };
-  newsSection: {
-    eyebrow: string;
+  inclusion: {
+    badge: string;
     title: string;
-    description: string;
-    viewAllText: string;
-    readMoreText: string;
-    articles: ArticleItem[];
+    subtitle: string;
+    ctaText: string;
+    features: { title: string; desc: string }[];
   };
-  footer: {
-    aboutText: string;
-    addressTitle: string;
-    addressLines: string[];
-    quickLinksTitle: string;
-    pillarsTitle: string;
-    contactTitle: string;
-    email: string;
-    phone: string;
-    copyright: string;
-    accessibilityStatement: string;
+  news: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    readMore: string;
+    closeModal: string;
+    items: NewsItem[];
+  };
+  aboutPage: {
+    badge: string;
+    title: string;
+    lead: string;
+    image: string;
+    philosophyBadge: string;
+    philosophyTitle: string;
+    philosophyQuote: string;
+    philosophyParagraphs: string[];
+    visionTitle: string;
+    visionText: string;
+    missionTitle: string;
+    missions: string[];
+    values: { title: string; desc: string }[];
+    accessibilityStandard: {
+      title: string;
+      subtitle: string;
+      standards: { code: string; name: string; detail: string }[];
+    };
+  };
+  programsPage: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    curriculumHeading: string;
+    outcomeHeading: string;
+    consultCta: string;
+    items: PillarDetailItem[];
+  };
+  contact: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    addressLabel: string;
+    addressValue: string;
+    emailLabel: string;
+    hoursLabel: string;
+    hoursValue: string;
+    formTitle: string;
+    namePlaceholder: string;
+    orgPlaceholder: string;
+    emailPlaceholder: string;
+    topicLabel: string;
+    topics: string[];
+    messagePlaceholder: string;
+    submitBtn: string;
+    successMsg: string;
   };
 }
 
-export const siteContent: Record<Language, SiteData> = {
+export const siteContent: Record<"id" | "en", SiteLanguageContent> = {
   id: {
-    meta: {
-      siteName: 'Increase.id',
-      tagline: 'Inclusive Creative Social Enterprise',
-      skipToContent: 'Lewati ke konten utama',
-    },
-    accessibilityBar: {
-      label: 'Aksesibilitas',
-      contrastToggle: 'Kontras Tinggi',
-      contrastActive: 'Mode Kontras Aktif',
-      fontSizeLabel: 'Ukuran Teks',
-      languageLabel: 'Bahasa',
-    },
-    nav: {
-      items: [
-        { label: 'Tentang Kami', href: '#tentang' },
-        { label: 'Angka Dampak', href: '#dampak' },
-        { label: 'Pilar Program', href: '#pilar' },
-        { label: 'Inklusi & Aksesibilitas', href: '#inklusi' },
-        { label: 'Wawasan & Berita', href: '#berita' },
-      ],
-      ctaButton: 'Bermitra Dengan Kami',
-    },
+    // ==========================================
+    // 1. BERANDA (RINGKAS & VISUAL ALA UNILEVER)
+    // ==========================================
     hero: {
-      eyebrow: 'INCLUSIVE CREATIVE SOCIAL ENTERPRISE',
-      title: 'Menggerakkan Ekonomi Kreatif yang',
-      highlightTitle: 'Setara, Inklusif, dan Berdampak Nyata.',
-      description:
-        'Increase.id menjembatani wirausaha sosial, talenta penyandang disabilitas, dan korporasi untuk membangun ekosistem bisnis berkelanjutan di seluruh Indonesia.',
-      primaryCta: 'Jelajahi Pilar Program',
-      secondaryCta: 'Unduh Laporan Dampak',
-      featuredStatLabel: 'Penerima Manfaat & Talenta Inklusif',
-      featuredStatValue: '12.400+',
+      badge: "Inclusive Creative Social Enterprise",
+      title: "Inovasi Kreatif Tanpa Batas.",
+      subtitle:
+        "Menghubungkan talenta disabilitas dengan industri melalui inkubasi, akselerasi usaha, dan konsultasi inklusi.",
+      primaryCta: "Program Kami",
+      secondaryCta: "Tentang Kami",
+      image: "/images/hero.jpg",
+      imageCaption: "Studio Kolaborasi Inklusif Increase.id",
     },
-    impactSection: {
-      eyebrow: 'JEJAK DAMPAK KAMI',
-      title: 'Pertumbuhan Bisnis yang Beriringan dengan Keadilan Sosial',
-      description:
-        'Kami mengukur keberhasilan bukan hanya dari pertumbuhan pendapatan mitra, tetapi dari seberapa luas akses ekonomi terbuka bagi kelompok rentan dan penyandang disabilitas.',
-      lastUpdated: 'Data terverifikasi hingga Kuartal IV',
-      metrics: [
+    metrics: {
+      title: "Dampak Terukur",
+      subtitle: "Skala transformasi inklusif di seluruh Indonesia.",
+      items: [
         {
-          id: 'metric-1',
-          value: '185',
-          suffix: '+',
-          label: 'UMKM & Wirausaha Sosial Diinkubasi',
-          description: 'Mendapatkan pendampingan kurikulum bisnis inklusif, tata kelola keuangan, dan akses pasar.',
-          category: 'Inkubasi & Akselerasi',
+          value: "1.250+",
+          label: "Talenta Kreatif",
+          sublabel: "Tersertifikasi & siap kerja",
         },
         {
-          id: 'metric-2',
-          value: '12.400',
-          suffix: '+',
-          label: 'Talenta Disabilitas & Kelompok Rentan',
-          description: 'Terlibat aktif dalam rantai pasok kreatif, pelatihan kesiapan kerja, dan kewirausahaan.',
-          category: 'Pemberdayaan SDM',
+          value: "48",
+          label: "Mitra Korporasi",
+          sublabel: "Transformasi kerja inklusif",
         },
         {
-          id: 'metric-3',
-          value: '42',
-          suffix: ' Mitra',
-          label: 'Korporasi & Lembaga Pembangunan',
-          description: 'Bertransformasi menerapkan kebijakan DEI (Diversity, Equity, & Inclusion) bersama tim advisory kami.',
-          category: 'Kemitraan Strategis',
+          value: "82%",
+          label: "Serapan Industri",
+          sublabel: "Karier & wirausaha mandiri",
         },
         {
-          id: 'metric-4',
-          value: '24',
-          suffix: ' Provinsi',
-          label: 'Jangkauan Ekosistem Nasional',
-          description: 'Menjangkau komunitas kreatif lokal dari wilayah perkotaan hingga daerah 3T di Indonesia.',
-          category: 'Sebaran Geografis',
+          value: "18",
+          label: "Kota Jangkauan",
+          sublabel: "Jejaring ekosistem nasional",
         },
       ],
     },
-    pillarsSection: {
-      eyebrow: 'PILAR PROGRAM UTAMA',
-      title: 'Tiga Mesin Penggerak Ekosistem Inklusif Increase.id',
-      description:
-        'Pendekatan menyeluruh dari peningkatan kapasitas wirausaha tingkat akar rumput hingga transformasi strategis di level korporasi.',
-      pillars: [
+    pillars: {
+      badge: "Pilar Utama",
+      title: "Solusi Terintegrasi",
+      subtitle: "Tiga fokus pemberdayaan talenta dan kesiapan korporasi.",
+      ctaText: "Pelajari Kurikulum",
+      items: [
         {
-          id: 'incubator',
-          badge: 'PILAR 01',
-          title: 'Inclusive Startup & SME Incubator',
-          subtitle: 'Membangun Fondasi Bisnis Kreatif yang Ramah Disabilitas',
-          description:
-            'Program inkubasi intensif bagi wirausaha tahap awal (early-stage) yang dipimpin oleh penyandang disabilitas atau memiliki misi dampak sosial yang kuat.',
-          highlights: [
-            'Kurikulum desain produk & layanan berbasis Universal Design',
-            'Mentoring 1-on-1 bersama praktisi industri kreatif dan keuangan',
-            'Validasi model bisnis, legalitas usaha, dan kesiapan pasar lokal',
-          ],
-          ctaText: 'Pelajari Program Incubator',
-          href: '#pilar-incubator',
-          accentColor: 'blue',
+          id: "incubator",
+          title: "Creative Incubator",
+          tagline: "Inkubasi Talenta",
+          shortDesc:
+            "Pelatihan intensif desain visual, UI/UX, dan produksi konten digital siap kerja.",
+          image: "/images/pilar-1.jpg",
         },
         {
-          id: 'accelerator',
-          badge: 'PILAR 02',
-          title: 'Impact Accelerator',
-          subtitle: 'Akselerasi Skala Dampak dan Kesiapan Investasi Berkelanjutan',
-          description:
-            'Dirancang bagi social enterprise yang siap memperluas jangkauan pasar nasional, mengintegrasikan rantai pasok korporasi, dan mengakses pendanaan berdampak (impact investing).',
-          highlights: [
-            'Pengukuran & pelaporan dampak terstandarisasi (Impact Measurement & Management)',
-            'Business matching dengan jaringan pembeli korporasi (B2B procurement)',
-            'Fasilitasi akses hibah strategis dan modal ventura berdampak',
-          ],
-          ctaText: 'Pelajari Impact Accelerator',
-          href: '#pilar-accelerator',
-          accentColor: 'teal',
+          id: "accelerator",
+          title: "Impact Accelerator",
+          tagline: "Akselerasi Wirausaha",
+          shortDesc:
+            "Pendampingan skala bisnis dan akses modal bagi UMKM inklusif.",
+          image: "/images/pilar-2.jpg",
         },
         {
-          id: 'advisory',
-          badge: 'PILAR 03',
-          title: 'Business & Inclusion Advisory',
-          subtitle: 'Konsultasi Strategis DEI, ESG, dan Transformasi Korporasi Inklusif',
-          description:
-            'Mendampingi perusahaan nasional maupun multinasional dalam merancang kebijakan lingkungan kerja inklusif, audit aksesibilitas, serta program CSR/CSV berkelanjutan.',
-          highlights: [
-            'Audit aksesibilitas fisik dan digital serta pelatihan etika berinteraksi dengan disabilitas',
-            'Perancangan rekrutmen inklusif dan penyesuaian layak (reasonable accommodation)',
-            'Riset dampak sosial dan implementasi rantai pasok inklusif',
-          ],
-          ctaText: 'Konsultasi Bersama Advisory',
-          href: '#pilar-advisory',
-          accentColor: 'amber',
+          id: "advisory",
+          title: "Business & Inclusion Advisory",
+          tagline: "Konsultasi Korporasi",
+          shortDesc:
+            "Audit aksesibilitas WCAG, pelatihan HR, dan sistem rekrutmen ramah disabilitas.",
+          image: "/images/pilar-3.jpg",
         },
       ],
     },
-    inclusionCommitment: {
-      eyebrow: 'STANDAR INKLUSIVITAS KAMI',
-      title: 'Dirancang Bersama, Bukan Sekadar Untuk Penyandang Disabilitas',
-      description:
-        'Kami menerapkan prinsip "Nothing About Us Without Us" dalam setiap riset, desain kurikulum, dan rekomendasi kebijakan bisnis yang kami jalankan.',
-      points: [
+    inclusion: {
+      badge: "Aksesibilitas 360°",
+      title: "Aksesibel Sejak Baris Kode Pertama",
+      subtitle: "Dirancang mengikuti standar WCAG 2.1 Level AA.",
+      ctaText: "Lihat Standar Kami",
+      features: [
         {
-          title: 'Aksesibilitas Digital & Fisik 360 Derajat',
-          description:
-            'Seluruh materi pelatihan dilengkapi juru bahasa isyarat (JBI), teks tertutup, dokumen ramah pembaca layar, serta lokasi kegiatan yang aksesibel.',
+          title: "Tipografi & Kontras",
+          desc: "Skala teks A++ dan mode kontras tinggi instan.",
         },
         {
-          title: 'Kemitraan Berbasis Kesetaraan Nilai',
-          description:
-            'Menempatkan pelaku usaha kreatif disabilitas sebagai mitra profesional yang kompetitif di pasar, bukan sekadar objek amal.',
+          title: "Ramah Pembaca Layar",
+          desc: "Navigasi keyboard dan struktur semantik penuh.",
         },
         {
-          title: 'Akuntabilitas & Transparansi Dampak',
-          description:
-            'Setiap program dipantau menggunakan indikator kinerja utama (KPI) sosial dan ekonomi yang transparan bagi seluruh pemangku kepentingan.',
+          title: "Desain Kognitif Bersih",
+          desc: "Visual ringkas tanpa distraksi berlebih.",
         },
       ],
-      ctaText: 'Pelajari Standar Aksesibilitas Kami',
     },
-    newsSection: {
-      eyebrow: 'WAWASAN, RISET & BERITA TERBARU',
-      title: 'Cerita Perubahan dan Publikasi Ekosistem Inklusif',
-      description:
-        'Ikuti perkembangan terbaru dari program inkubasi, laporan riset inklusi kerja, dan kisah inspiratif mitra wirausaha kami.',
-      viewAllText: 'Lihat Semua Publikasi',
-      readMoreText: 'Baca Selengkapnya',
-      articles: [
+    news: {
+      badge: "Publikasi",
+      title: "Berita & Riset",
+      subtitle: "Laporan dampak dan kabar kolaborasi terbaru.",
+      readMore: "Baca",
+      closeModal: "Tutup",
+      items: [
         {
-          id: 'news-1',
-          category: 'Laporan Riset',
-          date: '12 Oktober 2026',
-          readTime: '5 menit baca',
-          title: 'Mendorong Rantai Pasok Inklusif: Bagaimana Korporasi Indonesia Mengintegrasikan UMKM Disabilitas',
+          id: "laporan-inklusi-2026",
+          category: "Riset",
+          date: "12 Okt 2026",
+          readTime: "4 mnt",
+          title: "Indeks Kesiapan Inklusi Industri Kreatif 2026",
           excerpt:
-            'Temuan terbaru Increase.id menunjukkan peningkatan efisiensi dan inovasi produk ketika perusahaan membuka akses pengadaan bagi wirausaha sosial inklusif.',
-          author: 'Tim Riset & Advisory Increase.id',
-          slug: 'mendorong-rantai-pasok-inklusif-korporasi-indonesia',
+            "Adopsi rekrutmen inklusif meningkat 35% di 120 perusahaan digital.",
+          content: [
+            "Sektor ekonomi kreatif Indonesia mencatat kemajuan pesat dalam membuka peluang kerja bagi talenta disabilitas sepanjang 2026. Survei Increase.id terhadap 120 perusahaan digital dan agensi kreatif menunjukkan lonjakan komitmen keberagaman sebesar 35%.",
+            "Perusahaan yang menerapkan penyesuaian wajar (reasonable accommodation) sejak tahap wawancara membukukan tingkat retensi karyawan hingga 88% pada tahun pertama.",
+            "Laporan ini merangkum peta jalan praktis bagi tim HR dan pimpinan perusahaan untuk memulai audit aksesibilitas secara terukur.",
+          ],
+          image: "/images/news-1.jpg",
         },
         {
-          id: 'news-2',
-          category: 'Sorotan Program',
-          date: '28 September 2026',
-          readTime: '4 menit baca',
-          title: '25 Startup Kreatif Terpilih dalam Kohort Terbaru Impact Accelerator Increase.id',
+          id: "demo-day-incubator-batch-5",
+          category: "Program",
+          date: "28 Sep 2026",
+          readTime: "3 mnt",
+          title: "Demo Day Batch 5: 45 Kreator Siap Masuk Industri",
           excerpt:
-            'Para pendiri bisnis dari 11 provinsi berkumpul untuk menjalani akselerasi bisnis selama 16 minggu menuju kesiapan pendanaan berdampak.',
-          author: 'Divisi Inkubasi & Akselerasi',
-          slug: '25-startup-kreatif-terpilih-kohort-impact-accelerator',
+            "Lulusan Tuli dan Daksa mempresentasikan portofolio di hadapan 20 mitra perekrut.",
+          content: [
+            "Setelah 12 minggu pelatihan intensif, 45 kreator Creative Incubator Batch 5 memamerkan proyek UI/UX, ilustrasi komersial, dan kampanye digital kepada 20 perusahaan mitra.",
+            "Didukung Juru Bahasa Isyarat (JBI) dan takarir langsung, 31 lulusan langsung memperoleh kontrak kerja dan magang berbayar di pekan pertama.",
+          ],
+          image: "/images/news-2.jpg",
         },
         {
-          id: 'news-3',
-          category: 'Panduan Praktis',
-          date: '15 September 2026',
-          readTime: '6 menit baca',
-          title: 'Panduan Menyusun Akomodasi Layak (Reasonable Accommodation) di Tempat Kerja Modern',
+          id: "audit-aksesibilitas-digital",
+          category: "Wawasan",
+          date: "10 Agu 2026",
+          readTime: "5 mnt",
+          title: "Dampak Bisnis di Balik Kepatuhan Aksesibilitas WCAG",
           excerpt:
-            'Langkah konkret bagi divisi HR dan pemimpin bisnis dalam menciptakan ruang kerja yang produktif, aman, dan memberdayakan talenta disabilitas.',
-          author: 'Unit Business & Inclusion Advisory',
-          slug: 'panduan-menyusun-akomodasi-layak-di-tempat-kerja',
+            "Platform digital yang aksesibel memperluas pangsa pasar sekaligus mendongkrak performa SEO.",
+          content: [
+            "Penerapan Web Content Accessibility Guidelines (WCAG) bukan sekadar kepatuhan regulasi, melainkan investasi pengalaman pengguna yang berdampak langsung pada konversi bisnis.",
+            "Melalui Business & Inclusion Advisory, Increase.id mendampingi tim produk korporasi mengintegrasikan standar aksesibilitas ke dalam siklus pengembangan aplikasi.",
+          ],
+          image: "/images/news-3.jpg",
         },
       ],
     },
-    footer: {
-      aboutText:
-        'Increase.id adalah Inclusive Creative Social Enterprise yang berfokus mempercepat pertumbuhan wirausaha sosial dan membangun ekosistem bisnis yang inklusif di Indonesia.',
-      addressTitle: 'Kantor Pusat & Ruang Kolaborasi',
-      addressLines: [
-        'Increase Inclusive Hub, Jl. Kemang Raya No. 88',
-        'Jakarta Selatan, DKI Jakarta 12730, Indonesia',
+
+    // ==========================================
+    // 2. HALAMAN KHUSUS: /tentang-kami
+    // ==========================================
+    aboutPage: {
+      badge: "Profil Korporat",
+      title: "Merekayasa Ulang Ekosistem Kerja yang Setara",
+      lead: "Increase.id adalah wirausaha sosial kreatif yang menjembatani kesenjangan kompetensi dan aksesibilitas antara talenta disabilitas dengan industri modern.",
+      image: "/images/about.jpg",
+      philosophyBadge: "Filosofi Fundamental",
+      philosophyTitle: "Nothing About Us Without Us",
+      philosophyQuote:
+        "“Tidak ada kebijakan, produk, maupun program inklusi yang dirancang tanpa keterlibatan langsung penyandang disabilitas sebagai subjek dan pengambil keputusan.”",
+      philosophyParagraphs: [
+        "Selama puluhan tahun, program pemberdayaan disabilitas kerap terjebak pada pendekatan karitatif satu arah. Penyandang disabilitas hanya ditempatkan sebagai penerima manfaat pasif, bukan sebagai kreator atau penentu arah inovasi.",
+        "Di Increase.id, prinsip 'Nothing About Us Without Us' diterapkan secara struktural. Setiap kurikulum inkubasi, kerangka audit aksesibilitas, hingga tata kelola proyek dirancang, diuji, dan dipimpin bersama praktisi lintas disabilitas (Tuli, Netra, Daksa, dan Neurodivergen).",
+        "Pendekatan ini memastikan setiap solusi yang kami hadirkan bagi mitra korporasi benar-benar relevan, bermartabat, dan menciptakan kemandirian ekonomi jangka panjang.",
       ],
-      quickLinksTitle: 'Navigasi Utama',
-      pillarsTitle: 'Pilar Program',
-      contactTitle: 'Hubungi Tim Kami',
-      email: 'partnership@increase.id',
-      phone: '+62 (21) 5098-7712',
-      copyright: '© 2026 Increase.id (PT Inklusi Kreatif Nusantara). Hak Cipta Dilindungi.',
-      accessibilityStatement: 'Website ini dirancang mengikuti standar aksesibilitas web WCAG 2.1 Level AA.',
+      visionTitle: "Visi",
+      visionText:
+        "Menjadi katalis utama ekosistem ekonomi kreatif dan korporasi yang inklusif, aksesibel, dan berdaya saing global di Asia Tenggara.",
+      missionTitle: "Misi Strategis",
+      missions: [
+        "Menyelenggarakan inkubasi keterampilan digital dan kreatif berstandar industri bagi talenta disabilitas.",
+        "Mengakselerasi pertumbuhan bisnis sosial dan UMKM inklusif melalui akses pasar dan pendanaan berdampak.",
+        "Mendampingi korporasi mentransformasi infrastruktur fisik, produk digital, dan budaya kerja ramah disabilitas.",
+      ],
+      values: [
+        {
+          title: "Ko-Kreasi Setara",
+          desc: "Melibatkan komunitas disabilitas sebagai perancang utama di setiap lini program.",
+        },
+        {
+          title: "Keunggulan Karya",
+          desc: "Menempatkan kualitas profesional dan dampak terukur di atas narasi belas kasihan.",
+        },
+        {
+          title: "Aksesibilitas Menyeluruh",
+          desc: "Menghapus hambatan fisik, digital, dan komunikasi secara sistematis.",
+        },
+      ],
+      accessibilityStandard: {
+        title: "Standar Aksesibilitas 360° Kami",
+        subtitle:
+          "Tiga pilar standar operasional yang kami terapkan secara internal dan tularkan kepada seluruh mitra korporasi:",
+        standards: [
+          {
+            code: "WCAG 2.1 AA",
+            name: "Aksesibilitas Produk Digital",
+            detail:
+              "Rasio kontras minimal 4.5:1, dukungan penuh navigasi keyboard, atribut ARIA bagi pembaca layar, dan skalabilitas tipografi hingga 200%.",
+          },
+          {
+            code: "ISO 21542",
+            name: "Aksesibilitas Ruang & Acara Fisik",
+            detail:
+              "Ketersediaan jalur landai (ramp), ruang gerak kursi roda, pencahayaan ramah sensorik, serta juru bahasa isyarat (JBI) dan live captioning.",
+          },
+          {
+            code: "DEI Playbook",
+            name: "Budaya & Sistem HR Inklusif",
+            detail:
+              "Prosedur rekrutmen bebas bias, penyediaan akomodasi wajar (reasonable accommodation), serta pelatihan sensitivitas bagi manajer lini.",
+          },
+        ],
+      },
+    },
+
+    // ==========================================
+    // 3. HALAMAN KHUSUS: /program (KURIKULUM LENGKAP)
+    // ==========================================
+    programsPage: {
+      badge: "Arsitektur Program",
+      title: "Kurikulum & Pendampingan Berbasis Dampak",
+      subtitle:
+        "Setiap pilar program dirancang dengan silabus terstruktur dan indikator keberhasilan yang terukur bagi talenta maupun institusi mitra.",
+      curriculumHeading: "Struktur Kurikulum & Modul",
+      outcomeHeading: "Target Capaian (Output)",
+      consultCta: "Konsultasikan Program Ini",
+      items: [
+        {
+          id: "incubator",
+          title: "Creative Incubator",
+          tagline: "Inkubasi Karir & Portofolio Kreatif",
+          image: "/images/pilar-1.jpg",
+          overview:
+            "Program intensif selama 12 minggu yang mempersiapkan talenta muda disabilitas menjadi desainer produk digital, kreator konten visual, dan spesialis komunikasi merek yang siap terjun ke industri.",
+          targetAudience: "Talenta Tuli, Daksa, Netra & Neurodivergen (Usia 18–30 Tahun)",
+          duration: "12 Minggu (Hybrid: Studio & Online Aksesibel)",
+          curriculum: [
+            {
+              moduleTitle: "Modul 1: Fundamental Desain & Aksesibilitas Visual",
+              topics: [
+                "Prinsip tipografi, hierarki visual, dan psikologi warna inklusif",
+                "Penguasaan perangkat lunak standar industri (Figma & Adobe Creative Suite)",
+                "Desain ramah pengguna lintas kemampuan (Inclusive Design Thinking)",
+              ],
+            },
+            {
+              moduleTitle: "Modul 2: Produksi Proyek Nyata & Kolaborasi Agensi",
+              topics: [
+                "Simulasi brief klien korporat dan manajemen waktu proyek",
+                "Komunikasi profesional lintas kemampuan di lingkungan kerja modern",
+                "Kurasi portofolio komersial dan persiapan wawancara kerja",
+              ],
+            },
+          ],
+          outcomes: [
+            "Portofolio terkurasi berisi minimal 3 studi kasus proyek komersial",
+            "Sertifikasi kompetensi kreatif dan akses ke bursa kerja 48 mitra korporasi",
+            "Pendampingan penempatan kerja (job placement) selama 6 bulan pasca-lulus",
+          ],
+        },
+        {
+          id: "accelerator",
+          title: "Impact Accelerator",
+          tagline: "Akselerasi Skala Bisnis & Investasi Sosial",
+          image: "/images/pilar-2.jpg",
+          overview:
+            "Pendampingan bisnis strategis bagi wirausaha disabilitas dan rintisan sosial (social enterprise) untuk memperkuat rantai pasok, memperluas pasar B2B, dan mengakses pendanaan berdampak.",
+          targetAudience: "UMKM Inklusif & Rintisan Sosial Tahap Awal-Bertumbuh",
+          duration: "16 Minggu (Bootcamp, Mentoring 1-on-1 & Pitching)",
+          curriculum: [
+            {
+              moduleTitle: "Modul 1: Validasi Model Bisnis & Unit Economics",
+              topics: [
+                "Audit struktur biaya, penetapan harga (pricing), dan margin berkelanjutan",
+                "Standarisasi operasional dan manajemen rantai pasok inklusif",
+                "Legalitas usaha, HKI, dan kesiapan pengadaan korporat (B2B procurement)",
+              ],
+            },
+            {
+              moduleTitle: "Modul 2: Pengukuran Dampak (SROI) & Kesiapan Investasi",
+              topics: [
+                "Perancangan kerangka Social Return on Investment (SROI)",
+                "Strategi pemasaran digital dan kemitraan ritel modern",
+                "Penyusunan pitch deck dan pertemuan langsung dengan pemberi hibah/investor",
+              ],
+            },
+          ],
+          outcomes: [
+            "Dokumen proyeksi keuangan 3 tahun dan laporan metrik dampak sosial",
+            "Kontrak pengadaan B2B dengan jaringan korporasi mitra Increase.id",
+            "Akses langsung ke pendanaan katalitik dan hibah pengembangan usaha",
+          ],
+        },
+        {
+          id: "advisory",
+          title: "Business & Inclusion Advisory",
+          tagline: "Konsultasi Transformasi Inklusi Korporat",
+          image: "/images/pilar-3.jpg",
+          overview:
+            "Layanan pendampingan menyeluruh bagi perusahaan, BUMN, dan institusi publik untuk membangun ekosistem kerja, layanan pelanggan, serta produk digital yang memenuhi standar inklusi global.",
+          targetAudience: "Divisi HR, ESG/CSR, Tim Produk Digital & Manajemen Eksekutif",
+          duration: "4–24 Minggu (Disesuaikan Skala Organisasi)",
+          curriculum: [
+            {
+              moduleTitle: "Fase 1: Audit Aksesibilitas & Pemetaan Kesenjangan",
+              topics: [
+                "Audit aksesibilitas fisik kantor dan fasilitas publik",
+                "Pengujian teknis situs web & aplikasi seluler berstandar WCAG 2.1",
+                "Evaluasi kebijakan rekrutmen, KPI, dan kesiapan akomodasi kerja",
+              ],
+            },
+            {
+              moduleTitle: "Fase 2: Pelatihan Sensitivitas & Implementasi Sistem",
+              topics: [
+                "Workshop Disability Etiquette & komunikasi inklusif bagi pimpinan dan staf",
+                "Perancangan SOP onboarding dan pendampingan karyawan disabilitas",
+                "Publikasi laporan dampak ESG/DEI bersama pemangku kepentingan",
+              ],
+            },
+          ],
+          outcomes: [
+            "Dokumen Peta Jalan Transformasi Inklusi (Inclusion Roadmap) & Sertifikasi Audit",
+            "Peningkatan skor kepatuhan ESG/DEI dan kesiapan tim menerima talenta disabilitas",
+            "Penyaluran talenta terlatih dari Creative Incubator sesuai kebutuhan divisi",
+          ],
+        },
+      ],
+    },
+
+    // ==========================================
+    // 4. HALAMAN KHUSUS: /kontak
+    // ==========================================
+    contact: {
+      badge: "Kemitraan & Kontak",
+      title: "Mulai Kolaborasi Inklusif Anda",
+      subtitle:
+        "Hubungi tim kami untuk diskusi rekrutmen talenta, audit aksesibilitas, atau kemitraan CSR/ESG.",
+      addressLabel: "Studio & Kantor",
+      addressValue: "Jl. Senopati Raya No. 45, Kebayoran Baru, Jakarta Selatan 12190",
+      emailLabel: "Email Korporat",
+      hoursLabel: "Jam Operasional",
+      hoursValue: "Senin – Jumat, 09.00 – 17.00 WIB",
+      formTitle: "Formulir Kemitraan",
+      namePlaceholder: "Nama Lengkap",
+      orgPlaceholder: "Nama Perusahaan / Institusi",
+      emailPlaceholder: "nama@perusahaan.com",
+      topicLabel: "Fokus Kebutuhan",
+      topics: [
+        "Business & Inclusion Advisory (Audit & Pelatihan HR)",
+        "Rekrutmen Lulusan Creative Incubator",
+        "Kemitraan CSR / Impact Accelerator",
+        "Media & Undangan Pembicara",
+      ],
+      messagePlaceholder: "Jelaskan secara singkat rencana kolaborasi Anda...",
+      submitBtn: "Kirim Pesan",
+      successMsg:
+        "Terima kasih! Tim kemitraan Increase.id akan menghubungi Anda dalam 1–2 hari kerja.",
     },
   },
 
   en: {
-    meta: {
-      siteName: 'Increase.id',
-      tagline: 'Inclusive Creative Social Enterprise',
-      skipToContent: 'Skip to main content',
-    },
-    accessibilityBar: {
-      label: 'Accessibility',
-      contrastToggle: 'High Contrast',
-      contrastActive: 'High Contrast Active',
-      fontSizeLabel: 'Text Size',
-      languageLabel: 'Language',
-    },
-    nav: {
-      items: [
-        { label: 'About Us', href: '#tentang' },
-        { label: 'Impact Metrics', href: '#dampak' },
-        { label: 'Program Pillars', href: '#pilar' },
-        { label: 'Inclusion & Accessibility', href: '#inklusi' },
-        { label: 'Insights & News', href: '#berita' },
-      ],
-      ctaButton: 'Partner With Us',
-    },
+    // ==========================================
+    // 1. HOME (CONCISE & VISUAL LIKE UNILEVER)
+    // ==========================================
     hero: {
-      eyebrow: 'INCLUSIVE CREATIVE SOCIAL ENTERPRISE',
-      title: 'Advancing a Creative Economy that is',
-      highlightTitle: 'Equitable, Inclusive, and High-Impact.',
-      description:
-        'Increase.id bridges social entrepreneurs, talents with disabilities, and forward-thinking corporations to build a sustainable business ecosystem across Indonesia.',
-      primaryCta: 'Explore Program Pillars',
-      secondaryCta: 'Download Impact Report',
-      featuredStatLabel: 'Inclusive Talents & Beneficiaries Reached',
-      featuredStatValue: '12,400+',
+      badge: "Inclusive Creative Social Enterprise",
+      title: "Limitless Creative Innovation.",
+      subtitle:
+        "Connecting talents with disabilities to industry through incubation, venture acceleration, and inclusion advisory.",
+      primaryCta: "Our Programs",
+      secondaryCta: "About Us",
+      image: "/images/hero.jpg",
+      imageCaption: "Increase.id Inclusive Collaboration Studio",
     },
-    impactSection: {
-      eyebrow: 'OUR IMPACT FOOTPRINT',
-      title: 'Business Growth Hand-in-Hand with Social Equity',
-      description:
-        'We measure success not only by our partners’ revenue growth, but by how widely economic opportunities are unlocked for marginalized groups and persons with disabilities.',
-      lastUpdated: 'Verified data through Quarter IV',
-      metrics: [
+    metrics: {
+      title: "Measurable Impact",
+      subtitle: "The scale of inclusive transformation across Indonesia.",
+      items: [
         {
-          id: 'metric-1',
-          value: '185',
-          suffix: '+',
-          label: 'SMEs & Social Enterprises Incubated',
-          description: 'Equipped with inclusive business curricula, financial governance, and direct market access.',
-          category: 'Incubation & Acceleration',
+          value: "1,250+",
+          label: "Creative Talents",
+          sublabel: "Certified & industry-ready",
         },
         {
-          id: 'metric-2',
-          value: '12,400',
-          suffix: '+',
-          label: 'Talents with Disabilities & Vulnerable Youth',
-          description: 'Actively engaged in creative supply chains, job-readiness bootcamps, and entrepreneurship.',
-          category: 'Talent Empowerment',
+          value: "48",
+          label: "Corporate Partners",
+          sublabel: "Inclusive workplace transformation",
         },
         {
-          id: 'metric-3',
-          value: '42',
-          suffix: ' Partners',
-          label: 'Corporations & Development Agencies',
-          description: 'Transformed their DEI (Diversity, Equity, & Inclusion) policies alongside our advisory team.',
-          category: 'Strategic Partnerships',
+          value: "82%",
+          label: "Industry Placement",
+          sublabel: "Careers & independent ventures",
         },
         {
-          id: 'metric-4',
-          value: '24',
-          suffix: ' Provinces',
-          label: 'National Ecosystem Reach',
-          description: 'Connecting grassroots creative communities from major urban hubs to underserved regions.',
-          category: 'Geographic Footprint',
+          value: "18",
+          label: "Cities Reached",
+          sublabel: "National ecosystem network",
         },
       ],
     },
-    pillarsSection: {
-      eyebrow: 'CORE PROGRAM PILLARS',
-      title: 'Three Engines Driving the Increase.id Inclusive Ecosystem',
-      description:
-        'A holistic approach spanning from grassroots entrepreneurial capacity building to boardroom-level corporate inclusion strategy.',
-      pillars: [
+    pillars: {
+      badge: "Core Pillars",
+      title: "Integrated Solutions",
+      subtitle: "Three focus areas for talent empowerment and corporate readiness.",
+      ctaText: "Explore Curriculum",
+      items: [
         {
-          id: 'incubator',
-          badge: 'PILLAR 01',
-          title: 'Inclusive Startup & SME Incubator',
-          subtitle: 'Building Disability-Friendly Creative Business Foundations',
-          description:
-            'An intensive incubation program tailored for early-stage ventures led by persons with disabilities or founded with a core social inclusion mission.',
-          highlights: [
-            'Product and service design curriculum rooted in Universal Design principles',
-            '1-on-1 mentorship with creative industry leaders and financial specialists',
-            'Business model validation, legal incorporation, and local market readiness',
-          ],
-          ctaText: 'Discover the Incubator',
-          href: '#pilar-incubator',
-          accentColor: 'blue',
+          id: "incubator",
+          title: "Creative Incubator",
+          tagline: "Talent Incubation",
+          shortDesc:
+            "Intensive job-ready training in visual design, UI/UX, and digital content production.",
+          image: "/images/pilar-1.jpg",
         },
         {
-          id: 'accelerator',
-          badge: 'PILLAR 02',
-          title: 'Impact Accelerator',
-          subtitle: 'Scaling Social Impact and Sustainable Investment Readiness',
-          description:
-            'Designed for growth-stage social enterprises ready to expand nationwide, integrate into corporate supply chains, and secure impact investment.',
-          highlights: [
-            'Standardized Impact Measurement & Management (IMM) framework implementation',
-            'Direct B2B business matching with corporate procurement networks',
-            'Facilitation of strategic catalytic grants and impact venture capital',
-          ],
-          ctaText: 'Discover the Accelerator',
-          href: '#pilar-accelerator',
-          accentColor: 'teal',
+          id: "accelerator",
+          title: "Impact Accelerator",
+          tagline: "Venture Acceleration",
+          shortDesc:
+            "Business scaling mentorship and capital access for inclusive MSMEs.",
+          image: "/images/pilar-2.jpg",
         },
         {
-          id: 'advisory',
-          badge: 'PILLAR 03',
-          title: 'Business & Inclusion Advisory',
-          subtitle: 'Strategic DEI, ESG, and Inclusive Corporate Transformation Consulting',
-          description:
-            'Partnering with national and multinational enterprises to architect inclusive workplace policies, accessibility audits, and high-impact CSR/CSV initiatives.',
-          highlights: [
-            'Physical and digital accessibility audits plus disability etiquette training',
-            'Inclusive recruitment pipeline design and reasonable accommodation policies',
-            'Social return on investment (SROI) research and inclusive procurement strategy',
-          ],
-          ctaText: 'Consult With Our Advisory',
-          href: '#pilar-advisory',
-          accentColor: 'amber',
+          id: "advisory",
+          title: "Business & Inclusion Advisory",
+          tagline: "Corporate Advisory",
+          shortDesc:
+            "WCAG accessibility audits, HR training, and disability-inclusive hiring systems.",
+          image: "/images/pilar-3.jpg",
         },
       ],
     },
-    inclusionCommitment: {
-      eyebrow: 'OUR INCLUSION STANDARD',
-      title: 'Co-Designed With, Not Merely For, Persons with Disabilities',
-      description:
-        'We uphold the principle of "Nothing About Us Without Us" across every research study, curriculum design, and corporate advisory engagement we deliver.',
-      points: [
+    inclusion: {
+      badge: "360° Accessibility",
+      title: "Accessible from the First Line of Code",
+      subtitle: "Engineered in accordance with WCAG 2.1 Level AA standards.",
+      ctaText: "View Our Standards",
+      features: [
         {
-          title: '360-Degree Digital & Physical Accessibility',
-          description:
-            'All learning modules feature sign language interpretation, closed captioning, screen-reader-optimized documents, and barrier-free venues.',
+          title: "Typography & Contrast",
+          desc: "Instant A++ text scaling and high-contrast mode.",
         },
         {
-          title: 'Value-Driven Equal Partnerships',
-          description:
-            'Positioning disability-led creative enterprises as competitive, professional market suppliers rather than charity recipients.',
+          title: "Screen Reader Ready",
+          desc: "Full keyboard navigation and semantic structure.",
         },
         {
-          title: 'Impact Accountability & Transparency',
-          description:
-            'Every initiative is tracked against transparent social and economic Key Performance Indicators (KPIs) reported to stakeholders.',
+          title: "Clean Cognitive Layout",
+          desc: "Concise visuals free of overwhelming clutter.",
         },
       ],
-      ctaText: 'Read Our Accessibility Charter',
     },
-    newsSection: {
-      eyebrow: 'LATEST INSIGHTS, RESEARCH & NEWS',
-      title: 'Stories of Change and Inclusive Ecosystem Publications',
-      description:
-        'Stay updated with breakthroughs from our incubation cohorts, workplace inclusion whitepapers, and inspiring partner journeys.',
-      viewAllText: 'View All Publications',
-      readMoreText: 'Read Full Article',
-      articles: [
+    news: {
+      badge: "Publications",
+      title: "News & Insights",
+      subtitle: "Latest impact reports and collaboration stories.",
+      readMore: "Read",
+      closeModal: "Close",
+      items: [
         {
-          id: 'news-1',
-          category: 'Research Report',
-          date: 'October 12, 2026',
-          readTime: '5 min read',
-          title: 'Advancing Inclusive Supply Chains: How Indonesian Corporations Integrate Disability-Led SMEs',
+          id: "laporan-inklusi-2026",
+          category: "Research",
+          date: "Oct 12, 2026",
+          readTime: "4 min",
+          title: "Creative Industry Inclusion Readiness Index 2026",
           excerpt:
-            'New findings from Increase.id reveal stronger product innovation and brand resilience when enterprises open procurement to inclusive social ventures.',
-          author: 'Increase.id Research & Advisory Team',
-          slug: 'advancing-inclusive-supply-chains-indonesian-corporations',
+            "Inclusive hiring adoption rose by 35% across 120 digital companies.",
+          content: [
+            "Indonesia's creative economy recorded rapid progress in opening career pathways for talents with disabilities throughout 2026. Increase.id's survey of 120 digital firms and creative agencies shows a 35% surge in diversity commitments.",
+            "Companies implementing reasonable accommodations from the interview phase achieved an 88% first-year employee retention rate.",
+            "This report outlines a practical roadmap for HR teams and corporate leaders to initiate measurable accessibility audits.",
+          ],
+          image: "/images/news-1.jpg",
         },
         {
-          id: 'news-2',
-          category: 'Program Spotlight',
-          date: 'September 28, 2026',
-          readTime: '4 min read',
-          title: '25 Creative Ventures Selected for the Newest Increase.id Impact Accelerator Cohort',
+          id: "demo-day-incubator-batch-5",
+          category: "Program",
+          date: "Sep 28, 2026",
+          readTime: "3 min",
+          title: "Batch 5 Demo Day: 45 Creators Ready for Industry",
           excerpt:
-            'Founders across 11 provinces convene for a 16-week intensive acceleration sprint toward B2B market expansion and impact funding readiness.',
-          author: 'Incubation & Acceleration Division',
-          slug: '25-creative-ventures-selected-impact-accelerator-cohort',
+            "Deaf and mobility-impaired graduates presented portfolios to 20 hiring partners.",
+          content: [
+            "After 12 weeks of intensive training, 45 creators from Creative Incubator Batch 5 showcased UI/UX projects, commercial illustrations, and digital campaigns to 20 partner companies.",
+            "Supported by sign language interpreters and live captioning, 31 graduates secured job contracts and paid internships within the first week.",
+          ],
+          image: "/images/news-2.jpg",
         },
         {
-          id: 'news-3',
-          category: 'Practical Guide',
-          date: 'September 15, 2026',
-          readTime: '6 min read',
-          title: 'Executive Guide to Implementing Reasonable Accommodation in Modern Workplaces',
+          id: "audit-aksesibilitas-digital",
+          category: "Insights",
+          date: "Aug 10, 2026",
+          readTime: "5 min",
+          title: "The Business Case Behind WCAG Accessibility Compliance",
           excerpt:
-            'Actionable steps for HR leaders and corporate executives to cultivate productive, barrier-free environments for talents with disabilities.',
-          author: 'Business & Inclusion Advisory Unit',
-          slug: 'executive-guide-implementing-reasonable-accommodation',
+            "Accessible digital platforms expand market reach while boosting SEO performance.",
+          content: [
+            "Implementing Web Content Accessibility Guidelines (WCAG) goes beyond regulatory compliance—it is a user experience investment that directly drives business conversion.",
+            "Through Business & Inclusion Advisory, Increase.id assists corporate product teams in embedding accessibility standards into their development lifecycle.",
+          ],
+          image: "/images/news-3.jpg",
         },
       ],
     },
-    footer: {
-      aboutText:
-        'Increase.id is an Inclusive Creative Social Enterprise dedicated to accelerating social ventures and building an inclusive business ecosystem across Indonesia.',
-      addressTitle: 'Headquarters & Collaboration Hub',
-      addressLines: [
-        'Increase Inclusive Hub, Jl. Kemang Raya No. 88',
-        'South Jakarta, DKI Jakarta 12730, Indonesia',
+
+    // ==========================================
+    // 2. DEDICATED PAGE: /tentang-kami
+    // ==========================================
+    aboutPage: {
+      badge: "Corporate Profile",
+      title: "Re-engineering an Equitable Work Ecosystem",
+      lead: "Increase.id is an inclusive creative social enterprise bridging the competency and accessibility gap between talents with disabilities and modern industry.",
+      image: "/images/about.jpg",
+      philosophyBadge: "Foundational Philosophy",
+      philosophyTitle: "Nothing About Us Without Us",
+      philosophyQuote:
+        "“No inclusion policy, product, or program should ever be designed without the direct involvement of persons with disabilities as active subjects and decision-makers.”",
+      philosophyParagraphs: [
+        "For decades, disability empowerment initiatives often fell into one-way charitable approaches—positioning persons with disabilities as passive beneficiaries rather than creators and leaders of innovation.",
+        "At Increase.id, 'Nothing About Us Without Us' is embedded structurally. Every incubation curriculum, accessibility audit framework, and project governance model is co-designed, tested, and led alongside cross-disability practitioners (Deaf, Blind/Low-Vision, Physical, and Neurodivergent).",
+        "This approach ensures that every solution we deliver to corporate partners is genuinely relevant, dignified, and built for long-term economic independence.",
       ],
-      quickLinksTitle: 'Main Navigation',
-      pillarsTitle: 'Program Pillars',
-      contactTitle: 'Connect With Our Team',
-      email: 'partnership@increase.id',
-      phone: '+62 (21) 5098-7712',
-      copyright: '© 2026 Increase.id (PT Inklusi Kreatif Nusantara). All Rights Reserved.',
-      accessibilityStatement: 'This website is engineered in alignment with WCAG 2.1 Level AA web accessibility standards.',
+      visionTitle: "Vision",
+      visionText:
+        "To be the primary catalyst for an inclusive, accessible, and globally competitive creative economy and corporate ecosystem in Southeast Asia.",
+      missionTitle: "Strategic Missions",
+      missions: [
+        "Deliver industry-standard digital and creative skill incubation for talents with disabilities.",
+        "Accelerate inclusive MSMEs and social ventures through market access and impact capital.",
+        "Partner with corporations to transform physical infrastructure, digital products, and disability-friendly work cultures.",
+      ],
+      values: [
+        {
+          title: "Equal Co-Creation",
+          desc: "Involving disability communities as lead designers across every program line.",
+        },
+        {
+          title: "Craft Excellence",
+          desc: "Putting professional quality and measurable impact above charity narratives.",
+        },
+        {
+          title: "End-to-End Accessibility",
+          desc: "Systematically removing physical, digital, and communication barriers.",
+        },
+      ],
+      accessibilityStandard: {
+        title: "Our 360° Accessibility Standards",
+        subtitle:
+          "Three operational pillars we practice internally and implement across all corporate partners:",
+        standards: [
+          {
+            code: "WCAG 2.1 AA",
+            name: "Digital Product Accessibility",
+            detail:
+              "Minimum 4.5:1 contrast ratio, full keyboard navigation support, ARIA attributes for screen readers, and typography scaling up to 200%.",
+          },
+          {
+            code: "ISO 21542",
+            name: "Physical Space & Event Accessibility",
+            detail:
+              "Step-free ramps, wheelchair turning radiuses, sensory-friendly lighting, plus professional sign language interpreters and live captioning.",
+          },
+          {
+            code: "DEI Playbook",
+            name: "Inclusive HR Culture & Systems",
+            detail:
+              "Bias-free hiring procedures, reasonable workplace accommodations, and practical sensitivity training for line managers.",
+          },
+        ],
+      },
+    },
+
+    // ==========================================
+    // 3. DEDICATED PAGE: /program (FULL CURRICULUM)
+    // ==========================================
+    programsPage: {
+      badge: "Program Architecture",
+      title: "Impact-Driven Curriculum & Advisory",
+      subtitle:
+        "Every program pillar is structured with a clear syllabus and measurable success indicators for both talents and partner institutions.",
+      curriculumHeading: "Curriculum Structure & Modules",
+      outcomeHeading: "Key Outcomes",
+      consultCta: "Consult on This Program",
+      items: [
+        {
+          id: "incubator",
+          title: "Creative Incubator",
+          tagline: "Creative Career & Portfolio Incubation",
+          image: "/images/pilar-1.jpg",
+          overview:
+            "An intensive 12-week program preparing young talents with disabilities to become industry-ready digital product designers, visual content creators, and brand communication specialists.",
+          targetAudience: "Deaf, Physical, Low-Vision & Neurodivergent Talents (Ages 18–30)",
+          duration: "12 Weeks (Hybrid: Studio & Accessible Online)",
+          curriculum: [
+            {
+              moduleTitle: "Module 1: Design Fundamentals & Visual Accessibility",
+              topics: [
+                "Typography principles, visual hierarchy, and inclusive color psychology",
+                "Mastery of industry-standard tools (Figma & Adobe Creative Suite)",
+                "Cross-ability user-centered design (Inclusive Design Thinking)",
+              ],
+            },
+            {
+              moduleTitle: "Module 2: Real-World Production & Agency Collaboration",
+              topics: [
+                "Corporate client brief simulations and project timeline management",
+                "Cross-ability professional communication in modern workplaces",
+                "Commercial portfolio curation and job interview preparation",
+              ],
+            },
+          ],
+          outcomes: [
+            "Curated portfolio featuring at least 3 commercial project case studies",
+            "Creative competency certification and access to 48 corporate hiring partners",
+            "6-month post-graduation job placement mentoring",
+          ],
+        },
+        {
+          id: "accelerator",
+          title: "Impact Accelerator",
+          tagline: "Business Scaling & Social Investment Acceleration",
+          image: "/images/pilar-2.jpg",
+          overview:
+            "Strategic business mentorship for entrepreneurs with disabilities and social enterprises to strengthen supply chains, expand B2B markets, and secure impact funding.",
+          targetAudience: "Inclusive MSMEs & Early-to-Growth Social Enterprises",
+          duration: "16 Weeks (Bootcamp, 1-on-1 Mentoring & Pitching)",
+          curriculum: [
+            {
+              moduleTitle: "Module 1: Business Model Validation & Unit Economics",
+              topics: [
+                "Cost structure audit, pricing strategy, and sustainable margins",
+                "Operational standardization and inclusive supply chain management",
+                "Business legality, IP, and corporate B2B procurement readiness",
+              ],
+            },
+            {
+              moduleTitle: "Module 2: Impact Measurement (SROI) & Investment Readiness",
+              topics: [
+                "Designing a Social Return on Investment (SROI) framework",
+                "Digital marketing strategy and modern retail partnerships",
+                "Pitch deck refinement and direct matchmaking with grantmakers/investors",
+              ],
+            },
+          ],
+          outcomes: [
+            "3-year financial projection model and social impact metrics report",
+            "B2B procurement contracts within Increase.id's corporate partner network",
+            "Direct access to catalytic capital and business development grants",
+          ],
+        },
+        {
+          id: "advisory",
+          title: "Business & Inclusion Advisory",
+          tagline: "Corporate Inclusion Transformation Advisory",
+          image: "/images/pilar-3.jpg",
+          overview:
+            "End-to-end advisory for corporations, state-owned enterprises, and public institutions to build workplaces, customer services, and digital products that meet global inclusion standards.",
+          targetAudience: "HR Divisions, ESG/CSR Teams, Digital Product Teams & Executives",
+          duration: "4–24 Weeks (Tailored to Organizational Scale)",
+          curriculum: [
+            {
+              moduleTitle: "Phase 1: Accessibility Audit & Gap Mapping",
+              topics: [
+                "Physical office and public facility accessibility audits",
+                "Technical website & mobile app testing against WCAG 2.1 standards",
+                "Evaluation of recruitment policies, KPIs, and workplace accommodation readiness",
+              ],
+            },
+            {
+              moduleTitle: "Phase 2: Sensitivity Training & System Implementation",
+              topics: [
+                "Disability Etiquette & inclusive communication workshops for leaders and staff",
+                "Designing inclusive onboarding SOPs and employee support systems",
+                "Co-publishing ESG/DEI impact reports for stakeholders",
+              ],
+            },
+          ],
+          outcomes: [
+            "Comprehensive Inclusion Transformation Roadmap & Audit Certification",
+            "Improved ESG/DEI compliance scores and team readiness for inclusive hiring",
+            "Direct talent pipeline placement from Creative Incubator tailored to division needs",
+          ],
+        },
+      ],
+    },
+
+    // ==========================================
+    // 4. DEDICATED PAGE: /kontak
+    // ==========================================
+    contact: {
+      badge: "Partnership & Contact",
+      title: "Start Your Inclusive Collaboration",
+      subtitle:
+        "Reach out to our team to discuss talent recruitment, accessibility audits, or CSR/ESG partnerships.",
+      addressLabel: "Studio & Office",
+      addressValue: "Jl. Senopati Raya No. 45, Kebayoran Baru, South Jakarta 12190",
+      emailLabel: "Corporate Email",
+      hoursLabel: "Operating Hours",
+      hoursValue: "Monday – Friday, 09:00 – 17:00 WIB",
+      formTitle: "Partnership Inquiry Form",
+      namePlaceholder: "Full Name",
+      orgPlaceholder: "Company / Institution Name",
+      emailPlaceholder: "name@company.com",
+      topicLabel: "Collaboration Focus",
+      topics: [
+        "Business & Inclusion Advisory (Audit & HR Training)",
+        "Creative Incubator Graduate Recruitment",
+        "CSR / Impact Accelerator Partnership",
+        "Media & Speaking Invitation",
+      ],
+      messagePlaceholder: "Briefly describe your collaboration plans...",
+      submitBtn: "Send Message",
+      successMsg:
+        "Thank you! The Increase.id partnership team will contact you within 1–2 business days.",
     },
   },
 };
-

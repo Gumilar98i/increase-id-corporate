@@ -1,288 +1,295 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { usePreferences, FontSizeScale } from '@/context/PreferencesContext';
-import {
-  Globe,
-  Eye,
-  Type,
-  Menu,
-  X,
-  ArrowUpRight,
-  Sparkles,
-} from 'lucide-react';
+import React, { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X, Globe, Eye, ArrowUpRight } from "lucide-react";
+import { usePreferences } from "@/context/PreferencesContext";
 
 export default function Navbar() {
   const {
-    lang,
-    setLang,
-    highContrast,
-    toggleHighContrast,
+    language,
+    setLanguage,
     fontSize,
     setFontSize,
-    content,
+    highContrast,
+    setHighContrast,
   } = usePreferences();
-
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
-  const fontSizes: { key: FontSizeScale; label: string; aria: string }[] = [
-    { key: 'normal', label: 'A', aria: 'Ukuran teks normal' },
-    { key: 'large', label: 'A+', aria: 'Ukuran teks besar' },
-    { key: 'xlarge', label: 'A++', aria: 'Ukuran teks ekstra besar' },
+  const navLinks = [
+    {
+      href: "/",
+      label: language === "id" ? "Beranda" : "Home",
+    },
+    {
+      href: "/tentang-kami",
+      label: language === "id" ? "Tentang Kami" : "About Us",
+    },
+    {
+      href: "/program",
+      label: language === "id" ? "Program" : "Programs",
+    },
+    {
+      href: "/berita",
+      label: language === "id" ? "Berita" : "News",
+    },
   ];
 
+  const isActive = (path: string) => pathname === path;
+
   return (
-    <header className="sticky top-0 z-50 w-full">
-      {/* Skip to Main Content Link (Penting untuk Pembaca Layar / Screen Reader) */}
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-yellow-400 focus:px-4 focus:py-2 focus:font-bold focus:text-black focus:shadow-lg"
-      >
-        {content.meta.skipToContent}
-      </a>
-
-      {/* Lapis 1: Top Utility & Accessibility Bar ala Unilever */}
+    <header
+      className={`sticky top-0 z-50 w-full transition-colors duration-200 ${
+        highContrast
+          ? "bg-black text-yellow-300 border-b-2 border-yellow-400"
+          : "bg-white/95 backdrop-blur-md text-slate-900 border-b border-slate-200/80 shadow-xs"
+      }`}
+    >
+      {/* Slim Top Utility Bar (Accessibility & ID/EN Language Toggle) */}
       <div
-        className={`border-b text-xs transition-colors ${
+        className={`text-xs transition-colors ${
           highContrast
-            ? 'border-yellow-400/40 bg-zinc-950 text-yellow-300'
-            : 'border-slate-200 bg-slate-900 text-slate-200'
+            ? "bg-zinc-900 text-yellow-300 border-b border-yellow-500/40"
+            : "bg-slate-900 text-slate-300"
         }`}
-        role="region"
-        aria-label={content.accessibilityBar.label}
       >
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-2 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-3.5 w-3.5 text-teal-400" aria-hidden="true" />
-            <span className="font-medium tracking-wide">
-              {content.meta.siteName} — {content.meta.tagline}
-            </span>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-8 flex items-center justify-between">
+          <span className="hidden sm:inline font-medium tracking-wider text-[11px] uppercase opacity-85">
+            Inclusive Creative Social Enterprise
+          </span>
 
-          <div className="flex flex-wrap items-center gap-3 sm:gap-5">
-            {/* Kontrol Ukuran Teks */}
-            <div className="flex items-center gap-1.5" role="group" aria-label={content.accessibilityBar.fontSizeLabel}>
-              <Type className="h-3.5 w-3.5 opacity-80" aria-hidden="true" />
-              <span className="hidden sm:inline opacity-80">
-                {content.accessibilityBar.fontSizeLabel}:
-              </span>
-              <div className="flex items-center rounded bg-slate-800 p-0.5">
-                {fontSizes.map((item) => (
+          <div className="flex items-center gap-3 ml-auto">
+            {/* Font Size Resizer */}
+            <div
+              className="flex items-center gap-1"
+              role="group"
+              aria-label={language === "id" ? "Ukuran Teks" : "Text Size"}
+            >
+              {(["normal", "large", "xlarge"] as const).map((size, idx) => {
+                const labels = ["A", "A+", "A++"];
+                const active = fontSize === size;
+                return (
                   <button
-                    key={item.key}
+                    key={size}
                     type="button"
-                    onClick={() => setFontSize(item.key)}
-                    aria-label={item.aria}
-                    aria-pressed={fontSize === item.key}
-                    className={`rounded px-2 py-0.5 font-semibold transition ${
-                      fontSize === item.key
+                    onClick={() => setFontSize(size)}
+                    className={`px-1.5 py-0.5 rounded text-[11px] font-semibold transition cursor-pointer ${
+                      active
                         ? highContrast
-                          ? 'bg-yellow-400 text-black'
-                          : 'bg-blue-600 text-white'
-                        : 'text-slate-300 hover:text-white'
+                          ? "bg-yellow-400 text-black"
+                          : "bg-teal-600 text-white"
+                        : "hover:bg-white/10"
                     }`}
+                    aria-pressed={active}
+                    title={
+                      language === "id"
+                        ? `Ukuran huruf: ${labels[idx]}`
+                        : `Font size: ${labels[idx]}`
+                    }
                   >
-                    {item.label}
+                    {labels[idx]}
                   </button>
-                ))}
-              </div>
+                );
+              })}
             </div>
 
-            {/* Tombol Kontras Tinggi */}
+            <span className="opacity-30">|</span>
+
+            {/* High Contrast Toggle */}
             <button
               type="button"
-              onClick={toggleHighContrast}
-              aria-pressed={highContrast}
-              className={`flex items-center gap-1.5 rounded px-2.5 py-1 font-medium transition focus:outline-none focus:ring-2 focus:ring-yellow-400 ${
+              onClick={() => setHighContrast(!highContrast)}
+              className={`flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium transition cursor-pointer ${
                 highContrast
-                  ? 'bg-yellow-400 font-bold text-black'
-                  : 'bg-slate-800 text-slate-200 hover:bg-slate-700'
+                  ? "bg-yellow-400 text-black font-bold"
+                  : "hover:bg-white/10 text-slate-200"
               }`}
+              aria-pressed={highContrast}
             >
-              <Eye className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>
-                {highContrast
-                  ? content.accessibilityBar.contrastActive
-                  : content.accessibilityBar.contrastToggle}
-              </span>
+              <Eye className="w-3 h-3" />
+              <span>{language === "id" ? "Kontras" : "Contrast"}</span>
             </button>
 
-            {/* Sakelar Bahasa ID / EN */}
+            <span className="opacity-30">|</span>
+
+            {/* Slim Language Switcher (ID / EN) */}
             <div
-              className="flex items-center gap-1.5"
+              className="flex items-center gap-1"
               role="group"
-              aria-label={content.accessibilityBar.languageLabel}
+              aria-label={language === "id" ? "Pilih Bahasa" : "Select Language"}
             >
-              <Globe className="h-3.5 w-3.5 opacity-80" aria-hidden="true" />
-              <div className="flex items-center rounded bg-slate-800 p-0.5">
-                <button
-                  type="button"
-                  onClick={() => setLang('id')}
-                  aria-pressed={lang === 'id'}
-                  className={`rounded px-2 py-0.5 font-semibold transition ${
-                    lang === 'id'
-                      ? highContrast
-                        ? 'bg-yellow-400 text-black'
-                        : 'bg-teal-600 text-white'
-                      : 'text-slate-300 hover:text-white'
-                  }`}
-                >
-                  ID
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setLang('en')}
-                  aria-pressed={lang === 'en'}
-                  className={`rounded px-2 py-0.5 font-semibold transition ${
-                    lang === 'en'
-                      ? highContrast
-                        ? 'bg-yellow-400 text-black'
-                        : 'bg-teal-600 text-white'
-                      : 'text-slate-300 hover:text-white'
-                  }`}
-                >
-                  EN
-                </button>
-              </div>
+              <Globe className="w-3 h-3 mr-0.5 opacity-80" />
+              <button
+                type="button"
+                onClick={() => setLanguage("id")}
+                className={`px-1.5 py-0.5 rounded text-[11px] font-bold transition cursor-pointer ${
+                  language === "id"
+                    ? highContrast
+                      ? "bg-yellow-400 text-black"
+                      : "bg-white text-slate-900"
+                    : "opacity-70 hover:opacity-100"
+                }`}
+                aria-pressed={language === "id"}
+              >
+                ID
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage("en")}
+                className={`px-1.5 py-0.5 rounded text-[11px] font-bold transition cursor-pointer ${
+                  language === "en"
+                    ? highContrast
+                      ? "bg-yellow-400 text-black"
+                      : "bg-white text-slate-900"
+                    : "opacity-70 hover:opacity-100"
+                }`}
+                aria-pressed={language === "en"}
+              >
+                EN
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Lapis 2: Navigasi Korporat Utama */}
+      {/* Main Corporate Navigation */}
       <nav
-        aria-label="Navigasi Utama"
-        className={`border-b backdrop-blur-md transition-colors ${
-          highContrast
-            ? 'border-yellow-400 bg-black/95 text-white'
-            : 'border-slate-200/80 bg-white/95 text-slate-900 shadow-sm'
-        }`}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+        aria-label={language === "id" ? "Navigasi Utama" : "Main Navigation"}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          {/* Brand Logo */}
-          <a
-            href="#"
-            className="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded-lg"
-          >
-            <div
-              className={`flex h-10 w-10 items-center justify-center rounded-xl font-black text-lg tracking-tighter ${
-                highContrast
-                  ? 'bg-yellow-400 text-black'
-                  : 'bg-gradient-to-br from-blue-700 via-blue-600 to-teal-500 text-white shadow-md shadow-blue-600/20'
-              }`}
-            >
-              IN
-            </div>
-            <div>
-              <span className="block text-xl font-extrabold tracking-tight">
-                Increase<span className={highContrast ? 'text-yellow-400' : 'text-blue-700'}>.id</span>
-              </span>
-              <span
-                className={`block text-[11px] font-medium uppercase tracking-widest ${
-                  highContrast ? 'text-zinc-300' : 'text-slate-500'
-                }`}
-              >
-                Inclusive Social Enterprise
-              </span>
-            </div>
-          </a>
-
-          {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex lg:items-center lg:gap-8">
-            {content.nav.items.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className={`text-sm font-semibold transition-colors focus:outline-none focus:underline ${
-                  highContrast
-                    ? 'text-white hover:text-yellow-400'
-                    : 'text-slate-700 hover:text-blue-700'
-                }`}
-              >
-                {item.label}
-              </a>
-            ))}
-          </div>
-
-          {/* CTA Button Desktop */}
-          <div className="hidden lg:flex lg:items-center">
-            <a
-              href="#kontak"
-              className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                highContrast
-                  ? 'bg-yellow-400 text-black hover:bg-yellow-300 focus:ring-yellow-400'
-                  : 'bg-blue-700 text-white hover:bg-blue-800 shadow-sm focus:ring-blue-700'
-              }`}
-            >
-              <span>{content.nav.ctaButton}</span>
-              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-            </a>
-          </div>
-
-          {/* Mobile Hamburger Button */}
-          <div className="flex lg:hidden">
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-expanded={mobileMenuOpen}
-              aria-label={mobileMenuOpen ? 'Tutup menu navigasi' : 'Buka menu navigasi'}
-              className={`rounded-lg p-2.5 focus:outline-none focus:ring-2 ${
-                highContrast
-                  ? 'border border-yellow-400 text-yellow-400 focus:ring-yellow-400'
-                  : 'border border-slate-200 text-slate-700 hover:bg-slate-100 focus:ring-blue-600'
-              }`}
-            >
-              {mobileMenuOpen ? (
-                <X className="h-6 w-6" aria-hidden="true" />
-              ) : (
-                <Menu className="h-6 w-6" aria-hidden="true" />
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Dropdown Menu */}
-        {mobileMenuOpen && (
+        {/* Brand Logo */}
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 group focus:outline-none"
+        >
           <div
-            className={`border-t px-4 pt-3 pb-6 lg:hidden ${
+            className={`w-9 h-9 rounded-xl flex items-center justify-center font-extrabold text-lg tracking-tight transition-transform group-hover:scale-105 ${
               highContrast
-                ? 'border-yellow-400 bg-zinc-950 text-white'
-                : 'border-slate-200 bg-white text-slate-900'
+                ? "bg-yellow-400 text-black"
+                : "bg-gradient-to-br from-teal-600 to-emerald-700 text-white shadow-xs"
             }`}
           >
-            <div className="flex flex-col space-y-3">
-              {content.nav.items.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`rounded-lg px-3 py-2 text-base font-semibold ${
-                    highContrast
-                      ? 'hover:bg-zinc-900 hover:text-yellow-400'
-                      : 'hover:bg-slate-100 hover:text-blue-700'
-                  }`}
-                >
-                  {item.label}
-                </a>
-              ))}
-              <div className="pt-2">
-                <a
-                  href="#kontak"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold ${
-                    highContrast
-                      ? 'bg-yellow-400 text-black'
-                      : 'bg-blue-700 text-white hover:bg-blue-800'
-                  }`}
-                >
-                  <span>{content.nav.ctaButton}</span>
-                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                </a>
-              </div>
-            </div>
+            in
           </div>
-        )}
+          <span className="font-extrabold text-xl tracking-tight leading-none">
+            increase
+            <span className={highContrast ? "text-yellow-400" : "text-teal-600"}>
+              .id
+            </span>
+          </span>
+        </Link>
+
+        {/* Desktop Menu Links */}
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => {
+            const active = isActive(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`relative py-2 text-sm font-semibold transition-colors ${
+                  active
+                    ? highContrast
+                      ? "text-yellow-400 underline underline-offset-8 decoration-2"
+                      : "text-teal-700"
+                    : highContrast
+                    ? "text-yellow-200 hover:text-yellow-400"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                {link.label}
+                {active && !highContrast && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-teal-600 rounded-full" />
+                )}
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Desktop CTA Button -> /kontak */}
+        <div className="hidden md:flex items-center">
+          <Link
+            href="/kontak"
+            className={`inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-sm font-semibold transition-all ${
+              highContrast
+                ? "bg-yellow-400 text-black hover:bg-yellow-300"
+                : "bg-teal-700 text-white hover:bg-teal-800 shadow-xs hover:shadow"
+            }`}
+          >
+            <span>{language === "id" ? "Hubungi Kami" : "Contact Us"}</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        {/* Mobile Hamburger Button */}
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className={`md:hidden p-2 rounded-lg transition cursor-pointer ${
+            highContrast
+              ? "text-yellow-300 hover:bg-zinc-800"
+              : "text-slate-700 hover:bg-slate-100"
+          }`}
+          aria-expanded={mobileMenuOpen}
+          aria-label={language === "id" ? "Buka Menu" : "Toggle Menu"}
+        >
+          {mobileMenuOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
+        </button>
       </nav>
+
+      {/* Mobile Dropdown Navigation */}
+      {mobileMenuOpen && (
+        <div
+          className={`md:hidden px-4 pt-2 pb-6 space-y-2 border-t ${
+            highContrast
+              ? "bg-black border-yellow-400 text-yellow-300"
+              : "bg-white border-slate-100 text-slate-900"
+          }`}
+        >
+          {navLinks.map((link) => {
+            const active = isActive(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block px-3.5 py-2.5 rounded-xl text-base font-semibold transition ${
+                  active
+                    ? highContrast
+                      ? "bg-yellow-400 text-black"
+                      : "bg-teal-50 text-teal-700"
+                    : highContrast
+                    ? "hover:bg-zinc-900"
+                    : "hover:bg-slate-50"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+
+          <div className="pt-2">
+            <Link
+              href="/kontak"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`flex items-center justify-center gap-1.5 w-full py-3 rounded-full font-semibold text-sm transition ${
+                highContrast
+                  ? "bg-yellow-400 text-black hover:bg-yellow-300"
+                  : "bg-teal-700 text-white hover:bg-teal-800"
+              }`}
+            >
+              <span>{language === "id" ? "Hubungi Kami" : "Contact Us"}</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
