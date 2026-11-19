@@ -79,7 +79,7 @@ export default function PillarsSection() {
                       highContrast ? "text-yellow-100" : "text-slate-600"
                     }`}
                   >
-                    {pillar.description}
+                    {pillar.shortDesc}
                   </p>
                 </div>
 
